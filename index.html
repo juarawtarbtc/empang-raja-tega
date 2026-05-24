@@ -7,7 +7,6 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Segoe UI',system-ui,sans-serif;background:#e8f0e8;min-height:100vh;}
-    /* Login Screen */
     #loginScreen {
       display:flex;align-items:center;justify-content:center;min-height:100vh;
       background:linear-gradient(135deg, #0d4f2b, #1a6b3c); padding:20px;
@@ -18,13 +17,11 @@
     .login-card button{width:100%;padding:16px;background:#e8a817;border:none;border-radius:30px;font-weight:700;font-size:1.1rem;color:#3d2e00;cursor:pointer;margin-top:10px;}
     .login-error{color:#c0392b;font-size:0.9rem;margin-top:8px;}
 
-    /* Main App */
     #appMain{display:none;min-height:100vh;background:#e8f0e8;}
     .header{background:linear-gradient(135deg, #0d4f2b, #1a6b3c);color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
     .header .logo{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:700;}
     .header button{background:rgba(255,255,255,0.15);border:none;color:white;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;}
 
-    /* Dashboard Grid Icons */
     .dashboard{padding:20px;display:block;}
     .icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:400px;margin:0 auto;}
     .icon-item{background:white;border-radius:18px;padding:20px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid #d4e0d4;cursor:pointer;transition:0.2s;}
@@ -32,7 +29,6 @@
     .icon-item .emoji{font-size:2.5rem;display:block;margin-bottom:8px;}
     .icon-item .label{font-weight:600;font-size:0.85rem;color:#1a6b3c;}
 
-    /* Content Panel (semua modul) */
     .panel{display:none;padding:16px;padding-bottom:30px;}
     .panel.active{display:block;}
     .back-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;margin-right:10px;vertical-align:middle;color:#1a6b3c;}
@@ -58,6 +54,8 @@
     .scoreboard table{color:white;min-width:auto;font-size:0.9rem;}
     .scoreboard th{background:rgba(255,255,255,0.15);color:#f5c84e;}
     .toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:white;padding:10px 20px;border-radius:25px;z-index:300;font-weight:600;}
+    .mode-selector label{font-weight:600;margin-right:15px;font-size:0.9rem;}
+    .mode-selector input{margin-right:5px;}
   </style>
 </head>
 <body>
@@ -80,7 +78,7 @@
     <button onclick="doLogout()">🚪 Keluar</button>
   </header>
 
-  <!-- Dashboard dengan Icon Grid (tanpa Poster) -->
+  <!-- Dashboard Icon Grid (tanpa Poster) -->
   <div class="dashboard active" id="dashboard">
     <div class="icon-grid">
       <div class="icon-item" onclick="openModule('lomba')"><span class="emoji">📋</span><span class="label">Lomba</span></div>
@@ -93,23 +91,32 @@
     </div>
   </div>
 
-  <!-- Panel Modul (tanpa panel poster) -->
+  <!-- Panel Lomba -->
   <div class="panel" id="panel-lomba">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📋 Kelola Lomba</h2></div>
     <div class="card"><button class="btn btn-primary btn-sm" onclick="showModal('modalLomba')">+ Lomba Baru</button></div>
     <div class="card"><div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Juara</th><th>Aksi</th></tr></thead><tbody id="lombaTable"></tbody></table></div></div>
   </div>
 
+  <!-- Panel Pendaftaran (dengan mode undian) -->
   <div class="panel" id="panel-pendaftaran">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📝 Pendaftaran</h2></div>
     <div class="card">
       <div class="form-group"><label>Pilih Lomba</label><select id="selDaftar" onchange="renderPeserta()"><option value="">-- Pilih --</option></select></div>
+      
+      <!-- Mode Pengisian Lapak -->
+      <div class="mode-selector" style="margin: 12px 0; padding: 10px; background: #f9fdf9; border-radius: 10px;">
+        <label><input type="radio" name="modeUndi" value="manual" checked onchange="changeModeUndi('manual')"> ✍️ Manual</label>
+        <label style="margin-left: 20px;"><input type="radio" name="modeUndi" value="otomatis" onchange="changeModeUndi('otomatis')"> 🎲 Otomatis</label>
+      </div>
+
       <button class="btn btn-accent btn-sm" onclick="showModal('modalPeserta')" id="btnTambahPeserta" disabled>+ Peserta</button>
       <button class="btn btn-outline btn-sm" onclick="undiOtomatis()" id="btnUndi" disabled>🎲 Undi Otomatis</button>
       <div style="overflow-x:auto;"><table><thead><tr><th>#</th><th>Nama</th><th>No HP</th><th>No Lapak</th><th>Group</th><th>Booking</th><th>Aksi</th></tr></thead><tbody id="pesertaTable"></tbody></table></div>
     </div>
   </div>
 
+  <!-- Panel Pencatatan -->
   <div class="panel" id="panel-pencatatan">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🎣 Pencatatan</h2></div>
     <div class="card">
@@ -125,6 +132,7 @@
     </div>
   </div>
 
+  <!-- Panel Hasil -->
   <div class="panel" id="panel-hasil">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🏆 Hasil</h2></div>
     <div class="card">
@@ -133,6 +141,7 @@
     </div>
   </div>
 
+  <!-- Panel Papan Skor TV -->
   <div class="panel" id="panel-papan">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📺 Papan Skor TV</h2></div>
     <div class="card">
@@ -142,7 +151,7 @@
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- MODALS (sama seperti sebelumnya) -->
 <div class="modal-overlay" id="modalLomba" style="display:none;"><div class="modal"><h3 id="judulLomba">Buat Lomba</h3>
   <div class="form-group"><label>Tipe</label><select id="fTipe"><option value="gaplean">Gaplean (Senin/Rabu/Jumat)</option><option value="sunday">Minggu</option></select></div>
   <div class="form-group"><label>Nama</label><input id="fNama"></div>
@@ -174,6 +183,9 @@
   const STORAGE = 'empang_raja_tega2';
   const TOTAL_LAPAK = 40;
   let data = { lomba:[] };
+  
+  // Mode undian global: 'manual' atau 'otomatis'
+  let currentModeUndi = 'manual';
 
   // Auth
   window.doLogin = () => {
@@ -217,6 +229,14 @@
     document.getElementById('dashboard').style.display = 'block';
   };
 
+  // Mode undian change handler
+  window.changeModeUndi = (mode) => {
+    currentModeUndi = mode;
+    // Update radio button visual (already done by browser)
+    // Render ulang peserta untuk mengaktifkan/menonaktifkan input
+    renderPeserta();
+  };
+
   function populateSelect(id) {
     const sel = document.getElementById(id); const v = sel.value;
     sel.innerHTML = '<option value="">-- Pilih Lomba --</option>';
@@ -252,11 +272,35 @@
   function renderPeserta() {
     const lomba = getLomba(document.getElementById('selDaftar').value);
     const btnTambah = document.getElementById('btnTambahPeserta'), btnUndi = document.getElementById('btnUndi');
-    if(!lomba) { document.getElementById('pesertaTable').innerHTML=''; btnTambah.disabled=true; btnUndi.disabled=true; return; }
-    btnTambah.disabled = lomba.status!=='upcoming'; btnUndi.disabled = lomba.status!=='upcoming' || !lomba.peserta.length;
-    document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`<tr><td>${i+1}</td><td>${p.nama}</td><td>${p.hp||'-'}</td><td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:60px;padding:4px;" onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)"></td><td>${p.noLapak?group(p.noLapak):'-'}</td><td>${p.booking}</td><td><button class="btn btn-sm btn-outline" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td></tr>`).join('');
+    if(!lomba) { 
+      document.getElementById('pesertaTable').innerHTML=''; 
+      btnTambah.disabled=true; 
+      btnUndi.disabled=true; 
+      return; 
+    }
+    btnTambah.disabled = lomba.status!=='upcoming';
+    // Tombol undi otomatis hanya aktif jika mode otomatis dan lomba upcoming
+    btnUndi.disabled = !(currentModeUndi === 'otomatis' && lomba.status === 'upcoming');
+    
+    const isReadonly = (currentModeUndi === 'otomatis');
+    document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`<tr>
+      <td>${i+1}</td>
+      <td>${p.nama}</td>
+      <td>${p.hp||'-'}</td>
+      <td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:60px;padding:4px;" 
+           onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)" 
+           ${isReadonly ? 'readonly' : ''}></td>
+      <td>${p.noLapak?group(p.noLapak):'-'}</td>
+      <td>${p.booking}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td>
+    </tr>`).join('');
   }
   window.updateNoLapak = (lombaId, pesertaId, val) => {
+    if(currentModeUndi === 'otomatis') {
+      toast('Mode otomatis aktif, tidak bisa mengubah manual');
+      renderPeserta();
+      return;
+    }
     const lomba = getLomba(lombaId); if(!lomba) return;
     const p = lomba.peserta.find(p=>p.id===pesertaId); if(!p) return;
     const no = parseInt(val); if(isNaN(no)||no<1||no>TOTAL_LAPAK) { toast('Nomor lapak 1-40'); renderPeserta(); return; }
@@ -273,16 +317,22 @@
     const lomba = getLomba(document.getElementById('selDaftar').value); if(!lomba) return;
     const pId = document.getElementById('fPId').value;
     const lapakManual = parseInt(document.getElementById('fPLapak').value) || null;
+    // Jika mode otomatis, jangan izinkan set manual (kecuali dari modal mungkin untuk admin bandel, biarkan saja)
     const peserta = { id: pId || 'pst_'+Date.now(), nama: document.getElementById('fPNama').value.trim(), hp: document.getElementById('fPHP').value, booking: document.getElementById('fPBooking').value, noLapak: lapakManual };
     if(pId) { const idx = lomba.peserta.findIndex(p=>p.id===pId); if(idx!==-1) lomba.peserta[idx]=peserta; }
     else lomba.peserta.push(peserta);
     saveData(); closeModal('modalPeserta'); renderPeserta(); toast('Peserta disimpan');
   };
   window.undiOtomatis = () => {
+    if(currentModeUndi !== 'otomatis') {
+      toast('Silakan pilih mode Otomatis terlebih dahulu');
+      return;
+    }
     const lomba = getLomba(document.getElementById('selDaftar').value); if(!lomba) return;
+    if(lomba.status !== 'upcoming') { toast('Lomba sudah dimulai'); return; }
     const spots = Array.from({length:TOTAL_LAPAK},(_,i)=>i+1).sort(()=>Math.random()-0.5);
     lomba.peserta.forEach((p,i)=> p.noLapak = spots[i]);
-    saveData(); renderPeserta(); toast('Undian otomatis selesai');
+    saveData(); renderPeserta(); toast('🎲 Undian otomatis selesai');
   };
 
   function renderCatatan() {
@@ -377,7 +427,11 @@
   function refreshAll() {
     renderLomba();
     ['selDaftar','selCatat','selHasil','selTV'].forEach(id => populateSelect(id));
-    renderPeserta(); renderCatatan(); renderHasil(); renderTV();
+    // Pastikan mode undi saat ini diterapkan saat render peserta
+    renderPeserta();
+    renderCatatan();
+    renderHasil();
+    renderTV();
   }
 
   loadData(); refreshAll();
