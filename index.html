@@ -3,78 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>🐟 Empang Raja Tega - Login Admin</title>
+  <title>🐟 Empang Raja Tega</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Segoe UI',system-ui,sans-serif;background:#e8f0e8;min-height:100vh;}
     /* Login Screen */
     #loginScreen {
       display:flex;align-items:center;justify-content:center;min-height:100vh;
-      background:linear-gradient(135deg, #0d4f2b, #1a6b3c);
-      padding:20px;
+      background:linear-gradient(135deg, #0d4f2b, #1a6b3c); padding:20px;
     }
-    .login-card {
-      background:white;border-radius:20px;padding:30px 25px;width:100%;max-width:380px;
-      box-shadow:0 15px 40px rgba(0,0,0,0.3);text-align:center;
-    }
-    .login-card h2 {color:#0d4f2b;margin-bottom:25px;font-size:1.8rem;}
-    .login-card input {
-      width:100%;padding:12px 15px;margin:10px 0;border:2px solid #d4e0d4;
-      border-radius:12px;font-size:1rem;background:#fafcfa;
-    }
-    .login-card button {
-      width:100%;padding:14px;background:#e8a817;border:none;border-radius:25px;
-      font-weight:700;font-size:1.1rem;color:#3d2e00;cursor:pointer;
-      margin-top:10px;transition:0.2s;
-    }
-    .login-card button:hover {background:#f5c84e;transform:translateY(-2px);}
-    .login-error {color:#c0392b;font-size:0.9rem;margin-top:8px;}
+    .login-card{background:white;border-radius:20px;padding:30px 25px;width:100%;max-width:360px;box-shadow:0 15px 40px rgba(0,0,0,0.3);text-align:center;}
+    .login-card h2{color:#0d4f2b;margin-bottom:25px;font-size:1.8rem;}
+    .login-card input{width:100%;padding:14px;margin:10px 0;border:2px solid #d4e0d4;border-radius:14px;font-size:1rem;background:#fafcfa;}
+    .login-card button{width:100%;padding:16px;background:#e8a817;border:none;border-radius:30px;font-weight:700;font-size:1.1rem;color:#3d2e00;cursor:pointer;margin-top:10px;}
+    .login-error{color:#c0392b;font-size:0.9rem;margin-top:8px;}
 
     /* Main App */
-    #appMain {display:none;}
-    .header {
-      background:linear-gradient(135deg, #0d4f2b, #1a6b3c);color:white;padding:12px 20px;
-      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.2);position:sticky;top:0;z-index:100;
-    }
+    #appMain{display:none;min-height:100vh;background:#e8f0e8;}
+    .header{background:linear-gradient(135deg, #0d4f2b, #1a6b3c);color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
     .header .logo{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:700;}
-    .header button{background:rgba(255,255,255,0.15);border:none;color:white;padding:6px 16px;border-radius:20px;font-weight:600;cursor:pointer;}
-    .nav{background:white;display:flex;flex-wrap:nowrap;overflow-x:auto;padding:0 10px;border-bottom:2px solid #d4e0d4;position:sticky;top:56px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-    .nav button{flex-shrink:0;background:none;border:none;padding:12px 16px;font-weight:600;color:#5a6b5c;border-bottom:3px solid transparent;font-size:0.85rem;}
-    .nav button.active{color:#1a6b3c;border-bottom-color:#e8a817;}
-    .main{padding:16px;max-width:1000px;margin:0 auto;}
-    .panel{display:none;}
+    .header button{background:rgba(255,255,255,0.15);border:none;color:white;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;}
+
+    /* Dashboard Grid Icons */
+    .dashboard{padding:20px;display:block;}
+    .icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:400px;margin:0 auto;}
+    .icon-item{background:white;border-radius:18px;padding:20px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid #d4e0d4;cursor:pointer;transition:0.2s;}
+    .icon-item:active{transform:scale(0.96);background:#f0f9f3;}
+    .icon-item .emoji{font-size:2.5rem;display:block;margin-bottom:8px;}
+    .icon-item .label{font-weight:600;font-size:0.85rem;color:#1a6b3c;}
+
+    /* Content Panel (semua modul) */
+    .panel{display:none;padding:16px;padding-bottom:30px;}
     .panel.active{display:block;}
+    .back-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;margin-right:10px;vertical-align:middle;color:#1a6b3c;}
+    .panel-header{display:flex;align-items:center;margin-bottom:16px;}
+    .panel-header h2{font-size:1.3rem;color:#0d4f2b;}
+
     .card{background:white;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #d4e0d4;}
-    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border:none;border-radius:25px;font-weight:600;cursor:pointer;font-size:0.9rem;transition:0.2s;}
-    .btn-primary{background:#1a6b3c;color:white;}
-    .btn-accent{background:#e8a817;color:#3d2e00;}
-    .btn-outline{background:white;color:#1a6b3c;border:2px solid #1a6b3c;}
-    .btn-danger{background:#c0392b;color:white;}
-    .btn-sm{padding:6px 12px;font-size:0.8rem;}
-    table{width:100%;border-collapse:collapse;font-size:0.85rem;min-width:600px;}
-    th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #d4e0d4;}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 18px;border:none;border-radius:30px;font-weight:600;font-size:0.9rem;cursor:pointer;transition:0.2s;background:white;color:#1a6b3c;border:2px solid #1a6b3c;}
+    .btn-primary{background:#1a6b3c;color:white;border:none;}
+    .btn-accent{background:#e8a817;color:#3d2e00;border:none;}
+    .btn-danger{background:#c0392b;color:white;border:none;}
+    .btn-sm{padding:8px 14px;font-size:0.8rem;}
+    .form-group{margin-bottom:14px;}
+    .form-group label{display:block;font-weight:600;margin-bottom:5px;font-size:0.9rem;}
+    .form-group input,.form-group select{width:100%;padding:12px;border:2px solid #d4e0d4;border-radius:10px;font-size:1rem;background:#fafcfa;}
+    table{width:100%;border-collapse:collapse;font-size:0.8rem;min-width:500px;}
+    th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #d4e0d4;}
     th{background:#f7faf7;font-weight:700;}
-    .form-group{margin-bottom:12px;}
-    .form-group label{display:block;font-weight:600;margin-bottom:4px;}
-    .form-group input,.form-group select{width:100%;padding:10px;border:2px solid #d4e0d4;border-radius:8px;font-size:0.9rem;}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
-    .modal{background:white;border-radius:14px;padding:20px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:10px;}
+    .modal{background:white;border-radius:18px;padding:20px;max-width:95vw;width:100%;max-height:85vh;overflow-y:auto;}
     .scoreboard{background:#0d2b1a;color:white;padding:20px;border-radius:14px;text-align:center;border:2px solid #e8a817;}
-    .scoreboard h2{color:#e8a817;font-size:1.8rem;}
-    .scoreboard table{color:white;min-width:auto;font-size:1rem;}
+    .scoreboard h2{color:#e8a817;font-size:1.5rem;}
+    .scoreboard table{color:white;min-width:auto;font-size:0.9rem;}
     .scoreboard th{background:rgba(255,255,255,0.15);color:#f5c84e;}
     .toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:white;padding:10px 20px;border-radius:25px;z-index:300;font-weight:600;}
-
-    @media (max-width:600px){
-      .header .logo{font-size:1.1rem;}
-      .nav button{font-size:0.75rem;padding:10px 12px;}
-    }
   </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
     <h2>🐟 Empang Raja Tega</h2>
@@ -85,88 +73,73 @@
   </div>
 </div>
 
-<!-- MAIN APPLICATION (hidden until login) -->
+<!-- MAIN APP -->
 <div id="appMain">
   <header class="header">
     <div class="logo"><span>🐟</span> Empang Raja Tega</div>
-    <button onclick="doLogout()">🚪 Logout</button>
+    <button onclick="doLogout()">🚪 Keluar</button>
   </header>
-  <nav class="nav" id="mainNav">
-    <button data-panel="dashboard" class="active">📊 Dashboard</button>
-    <button data-panel="lomba">📋 Lomba</button>
-    <button data-panel="pendaftaran">📝 Daftar</button>
-    <button data-panel="pencatatan">🎣 Catat</button>
-    <button data-panel="hasil">🏆 Hasil</button>
-    <button data-panel="poster">🖼️ Poster</button>
-    <button data-panel="papan">📺 TV</button>
-  </nav>
 
-  <main class="main">
-    <!-- Dashboard -->
-    <section class="panel active" id="panel-dashboard">
-      <div class="card"><h3>Ringkasan</h3><div id="dashStats"></div><button class="btn btn-danger btn-sm" onclick="resetAllData()" style="margin-top:10px;">🗑️ Reset Semua Data</button></div>
-      <div class="card"><h3>Lomba Terbaru</h3><div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Peserta</th></tr></thead><tbody id="dashTable"></tbody></table></div></div>
-    </section>
+  <!-- Dashboard dengan Icon Grid (tanpa Poster) -->
+  <div class="dashboard active" id="dashboard">
+    <div class="icon-grid">
+      <div class="icon-item" onclick="openModule('lomba')"><span class="emoji">📋</span><span class="label">Lomba</span></div>
+      <div class="icon-item" onclick="openModule('pendaftaran')"><span class="emoji">📝</span><span class="label">Peserta</span></div>
+      <div class="icon-item" onclick="openModule('pencatatan')"><span class="emoji">🎣</span><span class="label">Catat</span></div>
+      <div class="icon-item" onclick="openModule('hasil')"><span class="emoji">🏆</span><span class="label">Hasil</span></div>
+      <div class="icon-item" onclick="openModule('papan')"><span class="emoji">📺</span><span class="label">TV Skor</span></div>
+      <div class="icon-item" onclick="resetAllData()"><span class="emoji">🗑️</span><span class="label">Reset</span></div>
+      <div class="icon-item" onclick="doLogout()"><span class="emoji">🚪</span><span class="label">Logout</span></div>
+    </div>
+  </div>
 
-    <!-- Kelola Lomba -->
-    <section class="panel" id="panel-lomba">
-      <div class="card"><h3>Daftar Lomba</h3><button class="btn btn-primary btn-sm" onclick="showModal('modalLomba')">+ Lomba Baru</button>
-        <div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Juara</th><th>Aksi</th></tr></thead><tbody id="lombaTable"></tbody></table></div>
+  <!-- Panel Modul (tanpa panel poster) -->
+  <div class="panel" id="panel-lomba">
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📋 Kelola Lomba</h2></div>
+    <div class="card"><button class="btn btn-primary btn-sm" onclick="showModal('modalLomba')">+ Lomba Baru</button></div>
+    <div class="card"><div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Juara</th><th>Aksi</th></tr></thead><tbody id="lombaTable"></tbody></table></div></div>
+  </div>
+
+  <div class="panel" id="panel-pendaftaran">
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📝 Pendaftaran</h2></div>
+    <div class="card">
+      <div class="form-group"><label>Pilih Lomba</label><select id="selDaftar" onchange="renderPeserta()"><option value="">-- Pilih --</option></select></div>
+      <button class="btn btn-accent btn-sm" onclick="showModal('modalPeserta')" id="btnTambahPeserta" disabled>+ Peserta</button>
+      <button class="btn btn-outline btn-sm" onclick="undiOtomatis()" id="btnUndi" disabled>🎲 Undi Otomatis</button>
+      <div style="overflow-x:auto;"><table><thead><tr><th>#</th><th>Nama</th><th>No HP</th><th>No Lapak</th><th>Group</th><th>Booking</th><th>Aksi</th></tr></thead><tbody id="pesertaTable"></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-pencatatan">
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🎣 Pencatatan</h2></div>
+    <div class="card">
+      <div class="form-group"><label>Pilih Lomba</label><select id="selCatat" onchange="renderCatatan()"><option value="">-- Pilih --</option></select></div>
+      <div id="infoCatatan"></div>
+      <div id="aksiCatatan" style="display:none;">
+        <button class="btn btn-primary btn-sm" onclick="catatSuper()">🐟 Super</button>
+        <button class="btn btn-outline btn-sm" onclick="catatRamai()">🐠 Ramai</button>
+        <button class="btn btn-accent btn-sm" onclick="mulaiLomba()" id="btnMulai">▶️ Mulai</button>
+        <button class="btn btn-danger btn-sm" onclick="selesaiLomba()" id="btnSelesai">⏹️ Selesai</button>
       </div>
-    </section>
+      <div style="overflow-x:auto;"><table><thead><tr><th>Waktu</th><th>Lapak</th><th>Nama</th><th>Tipe</th><th>Berat/Jml</th></tr></thead><tbody id="catatanTable"></tbody></table></div>
+    </div>
+  </div>
 
-    <!-- Pendaftaran -->
-    <section class="panel" id="panel-pendaftaran">
-      <div class="card"><h3>Pendaftaran Peserta</h3>
-        <div class="form-group"><label>Pilih Lomba</label><select id="selDaftar" onchange="renderPeserta()"><option value="">-- Pilih --</option></select></div>
-        <button class="btn btn-accent btn-sm" onclick="showModal('modalPeserta')" id="btnTambahPeserta" disabled>+ Peserta</button>
-        <button class="btn btn-outline btn-sm" onclick="undiOtomatis()" id="btnUndi" disabled>🎲 Undi Otomatis</button>
-        <div style="overflow-x:auto;"><table><thead><tr><th>#</th><th>Nama</th><th>No HP</th><th>No Lapak</th><th>Group</th><th>Booking</th><th>Aksi</th></tr></thead><tbody id="pesertaTable"></tbody></table></div>
-      </div>
-    </section>
+  <div class="panel" id="panel-hasil">
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🏆 Hasil</h2></div>
+    <div class="card">
+      <div class="form-group"><label>Pilih Lomba</label><select id="selHasil" onchange="renderHasil()"><option value="">-- Pilih --</option></select></div>
+      <div id="hasilContent"></div>
+    </div>
+  </div>
 
-    <!-- Pencatatan -->
-    <section class="panel" id="panel-pencatatan">
-      <div class="card"><h3>Pencatatan Lomba</h3>
-        <div class="form-group"><label>Pilih Lomba</label><select id="selCatat" onchange="renderCatatan()"><option value="">-- Pilih --</option></select></div>
-        <div id="infoCatatan"></div>
-        <div id="aksiCatatan" style="display:none;">
-          <button class="btn btn-primary btn-sm" onclick="catatSuper()">🐟 Ikan Super</button>
-          <button class="btn btn-outline btn-sm" onclick="catatRamai()">🐠 Ikan Ramai</button>
-          <button class="btn btn-accent btn-sm" onclick="mulaiLomba()" id="btnMulai">▶️ Mulai</button>
-          <button class="btn btn-danger btn-sm" onclick="selesaiLomba()" id="btnSelesai">⏹️ Selesai</button>
-        </div>
-        <div style="overflow-x:auto;"><table><thead><tr><th>Waktu</th><th>No Lapak</th><th>Nama</th><th>Tipe</th><th>Berat/Jml</th></tr></thead><tbody id="catatanTable"></tbody></table></div>
-      </div>
-    </section>
-
-    <!-- Hasil -->
-    <section class="panel" id="panel-hasil">
-      <div class="card"><h3>Hasil Perhitungan</h3>
-        <div class="form-group"><label>Pilih Lomba</label><select id="selHasil" onchange="renderHasil()"><option value="">-- Pilih --</option></select></div>
-        <div id="hasilContent"></div>
-      </div>
-    </section>
-
-    <!-- Poster -->
-    <section class="panel" id="panel-poster">
-      <div class="card"><h3>Poster WhatsApp</h3>
-        <input type="text" id="posterNama" value="Empang Raja Tega" placeholder="Nama Empang" oninput="genPoster()" style="margin-bottom:8px;width:100%;">
-        <input type="text" id="posterHP" value="0812-3456-7890" placeholder="No HP Admin" oninput="genPoster()" style="margin-bottom:8px;width:100%;">
-        <select id="selPoster" onchange="genPoster()" style="margin-bottom:12px;width:100%;"><option value="">-- Pilih Lomba --</option></select>
-        <canvas id="posterCanvas" width="540" height="960" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.2);"></canvas>
-        <button class="btn btn-accent btn-sm" onclick="downloadPoster()" id="btnDownload" disabled>📥 Download</button>
-      </div>
-    </section>
-
-    <!-- Papan Skor TV -->
-    <section class="panel" id="panel-papan">
-      <div class="card">
-        <select id="selTV" onchange="renderTV()" style="width:100%;margin-bottom:12px;"><option value="">-- Pilih Lomba --</option></select>
-        <div id="tvContainer"></div>
-      </div>
-    </section>
-  </main>
+  <div class="panel" id="panel-papan">
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📺 Papan Skor TV</h2></div>
+    <div class="card">
+      <select id="selTV" onchange="renderTV()" style="width:100%;margin-bottom:12px;"><option value="">-- Pilih Lomba --</option></select>
+      <div id="tvContainer"></div>
+    </div>
+  </div>
 </div>
 
 <!-- MODALS -->
@@ -198,62 +171,51 @@
 
 <script>
 (function() {
-  const STORAGE = 'empang_raja_tega';
+  const STORAGE = 'empang_raja_tega2';
   const TOTAL_LAPAK = 40;
   let data = { lomba:[] };
 
   // Auth
-  function doLogin() {
-    const id = document.getElementById('loginId').value.trim();
-    const pass = document.getElementById('loginPass').value.trim();
-    if(id === 'rayhan' && pass === '123456') {
-      sessionStorage.setItem('empang_logged', 'true');
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('appMain').style.display = 'block';
-      loadData(); refreshAll(); switchPanel('dashboard');
-    } else {
-      document.getElementById('loginError').textContent = 'ID atau password salah!';
-    }
-  }
-  window.doLogin = doLogin;
-  window.doLogout = () => {
-    sessionStorage.removeItem('empang_logged');
-    location.reload();
+  window.doLogin = () => {
+    if(document.getElementById('loginId').value.trim()==='rayhan' && document.getElementById('loginPass').value.trim()==='123456'){
+      sessionStorage.setItem('empang_logged','true');
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('appMain').style.display='block';
+      loadData(); refreshAll();
+    }else{ document.getElementById('loginError').textContent='ID atau password salah!'; }
   };
+  window.doLogout = () => { sessionStorage.removeItem('empang_logged'); location.reload(); };
 
-  if(sessionStorage.getItem('empang_logged') === 'true') {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appMain').style.display = 'block';
-    loadData(); refreshAll(); switchPanel('dashboard');
+  if(sessionStorage.getItem('empang_logged')==='true'){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appMain').style.display='block';
+    loadData(); refreshAll();
   }
 
-  function loadData() { try{ const r=localStorage.getItem(STORAGE); if(r) data=JSON.parse(r); }catch(e){data={lomba:[]}} }
-  function saveData() { localStorage.setItem(STORAGE, JSON.stringify(data)); }
-  function getLomba(id) { return data.lomba.find(l=>l.id===id); }
-  function genId() { return 'lmb_'+Date.now()+Math.random().toString(36); }
-  function group(no) { return no<=20?'A':'B'; }
-  function toast(msg) { const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
+  function loadData(){ try{ const r=localStorage.getItem(STORAGE); if(r) data=JSON.parse(r); }catch(e){data={lomba:[]}} }
+  function saveData(){ localStorage.setItem(STORAGE, JSON.stringify(data)); }
+  function getLomba(id){ return data.lomba.find(l=>l.id===id); }
+  function genId(){ return 'lmb_'+Date.now()+Math.random().toString(36); }
+  function group(no){ return no<=20?'A':'B'; }
+  function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
   window.showModal = (id) => document.getElementById(id).style.display='flex';
   window.closeModal = (id) => document.getElementById(id).style.display='none';
 
-  function switchPanel(panel) {
+  // Navigasi modul
+  window.openModule = (module) => {
+    document.getElementById('dashboard').style.display = 'none';
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+panel).classList.add('active');
-    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-    const btn = document.querySelector(`.nav button[data-panel="${panel}"]`);
-    if(btn) btn.classList.add('active');
-    if(panel==='dashboard') renderDashboard();
-    if(panel==='lomba') renderLomba();
-    if(panel==='pendaftaran') { populateSelect('selDaftar'); renderPeserta(); }
-    if(panel==='pencatatan') { populateSelect('selCatat'); renderCatatan(); }
-    if(panel==='hasil') { populateSelect('selHasil'); renderHasil(); }
-    if(panel==='poster') { populateSelect('selPoster'); genPoster(); }
-    if(panel==='papan') { populateSelect('selTV'); renderTV(); }
-  }
-  window.switchPanel = switchPanel;
-  document.getElementById('mainNav').addEventListener('click', e => {
-    if(e.target.tagName==='BUTTON' && e.target.dataset.panel) switchPanel(e.target.dataset.panel);
-  });
+    document.getElementById('panel-'+module).classList.add('active');
+    if(module==='lomba') renderLomba();
+    else if(module==='pendaftaran') { populateSelect('selDaftar'); renderPeserta(); }
+    else if(module==='pencatatan') { populateSelect('selCatat'); renderCatatan(); }
+    else if(module==='hasil') { populateSelect('selHasil'); renderHasil(); }
+    else if(module==='papan') { populateSelect('selTV'); renderTV(); }
+  };
+  window.goHome = () => {
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('dashboard').style.display = 'block';
+  };
 
   function populateSelect(id) {
     const sel = document.getElementById(id); const v = sel.value;
@@ -262,10 +224,6 @@
     if(v && data.lomba.some(l=>l.id===v)) sel.value=v;
   }
 
-  function renderDashboard() {
-    document.getElementById('dashStats').innerHTML = `Total Lomba: ${data.lomba.length}`;
-    document.getElementById('dashTable').innerHTML = data.lomba.slice(0,5).map(l=>`<tr><td>${l.nama}</td><td>${l.tipe}</td><td>${l.tanggal}</td><td>${l.status}</td><td>${(l.peserta||[]).length}</td></tr>`).join('');
-  }
   function renderLomba() {
     document.getElementById('lombaTable').innerHTML = data.lomba.map(l=>`<tr><td>${l.nama}</td><td>${l.tipe}</td><td>${l.tanggal}</td><td>${l.status}</td><td>${l.jmlJuara}</td><td><button class="btn btn-sm btn-outline" onclick="editLomba('${l.id}')">✏️</button></td></tr>`).join('');
   }
@@ -288,53 +246,34 @@
     };
     if(id) { const idx = data.lomba.findIndex(l=>l.id===id); if(idx!==-1) { obj.peserta=data.lomba[idx].peserta; obj.catatan=data.lomba[idx].catatan; obj.status=data.lomba[idx].status; data.lomba[idx]=obj; } }
     else data.lomba.push(obj);
-    saveData(); closeModal('modalLomba'); toast('Lomba disimpan'); refreshAll();
+    saveData(); closeModal('modalLomba'); toast('Lomba disimpan'); renderLomba(); populateSelect('selDaftar'); populateSelect('selCatat'); populateSelect('selHasil'); populateSelect('selTV');
   };
 
-  // Pendaftaran
   function renderPeserta() {
     const lomba = getLomba(document.getElementById('selDaftar').value);
     const btnTambah = document.getElementById('btnTambahPeserta'), btnUndi = document.getElementById('btnUndi');
     if(!lomba) { document.getElementById('pesertaTable').innerHTML=''; btnTambah.disabled=true; btnUndi.disabled=true; return; }
-    btnTambah.disabled = lomba.status!=='upcoming';
-    btnUndi.disabled = lomba.status!=='upcoming' || !lomba.peserta.length;
-    document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`
-      <tr>
-        <td>${i+1}</td>
-        <td>${p.nama}</td>
-        <td>${p.hp||'-'}</td>
-        <td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:60px;padding:4px;" onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)"></td>
-        <td>${p.noLapak?group(p.noLapak):'-'}</td>
-        <td>${p.booking}</td>
-        <td><button class="btn btn-sm btn-outline" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td>
-      </tr>
-    `).join('');
+    btnTambah.disabled = lomba.status!=='upcoming'; btnUndi.disabled = lomba.status!=='upcoming' || !lomba.peserta.length;
+    document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`<tr><td>${i+1}</td><td>${p.nama}</td><td>${p.hp||'-'}</td><td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:60px;padding:4px;" onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)"></td><td>${p.noLapak?group(p.noLapak):'-'}</td><td>${p.booking}</td><td><button class="btn btn-sm btn-outline" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td></tr>`).join('');
   }
   window.updateNoLapak = (lombaId, pesertaId, val) => {
     const lomba = getLomba(lombaId); if(!lomba) return;
     const p = lomba.peserta.find(p=>p.id===pesertaId); if(!p) return;
-    const no = parseInt(val);
-    if(isNaN(no) || no<1 || no>TOTAL_LAPAK) { toast('Nomor lapak 1-40'); renderPeserta(); return; }
-    p.noLapak = no;
-    saveData(); renderPeserta(); toast('Nomor lapak diperbarui');
+    const no = parseInt(val); if(isNaN(no)||no<1||no>TOTAL_LAPAK) { toast('Nomor lapak 1-40'); renderPeserta(); return; }
+    p.noLapak = no; saveData(); renderPeserta(); toast('Nomor lapak diperbarui');
   };
   window.editPeserta = (lombaId, pId) => {
     const lomba = getLomba(lombaId); if(!lomba) return;
     const p = lomba.peserta.find(p=>p.id===pId); if(!p) return;
     document.getElementById('fPId').value=p.id; document.getElementById('fPNama').value=p.nama;
     document.getElementById('fPHP').value=p.hp||''; document.getElementById('fPBooking').value=p.booking;
-    document.getElementById('fPLapak').value = p.noLapak||'';
-    showModal('modalPeserta');
+    document.getElementById('fPLapak').value = p.noLapak||''; showModal('modalPeserta');
   };
   window.simpanPeserta = () => {
     const lomba = getLomba(document.getElementById('selDaftar').value); if(!lomba) return;
     const pId = document.getElementById('fPId').value;
     const lapakManual = parseInt(document.getElementById('fPLapak').value) || null;
-    const peserta = {
-      id: pId || 'pst_'+Date.now(), nama: document.getElementById('fPNama').value.trim(),
-      hp: document.getElementById('fPHP').value, booking: document.getElementById('fPBooking').value,
-      noLapak: lapakManual
-    };
+    const peserta = { id: pId || 'pst_'+Date.now(), nama: document.getElementById('fPNama').value.trim(), hp: document.getElementById('fPHP').value, booking: document.getElementById('fPBooking').value, noLapak: lapakManual };
     if(pId) { const idx = lomba.peserta.findIndex(p=>p.id===pId); if(idx!==-1) lomba.peserta[idx]=peserta; }
     else lomba.peserta.push(peserta);
     saveData(); closeModal('modalPeserta'); renderPeserta(); toast('Peserta disimpan');
@@ -346,17 +285,13 @@
     saveData(); renderPeserta(); toast('Undian otomatis selesai');
   };
 
-  // Pencatatan
   function renderCatatan() {
     const lomba = getLomba(document.getElementById('selCatat').value);
     document.getElementById('aksiCatatan').style.display = lomba?'block':'none';
     document.getElementById('btnMulai').style.display = lomba?.status==='upcoming'?'inline-flex':'none';
     document.getElementById('btnSelesai').style.display = lomba?.status==='active'?'inline-flex':'none';
     document.getElementById('infoCatatan').innerHTML = lomba?`${lomba.nama} | ${lomba.tipe} | ${lomba.tanggal} | ${lomba.status}`:'';
-    document.getElementById('catatanTable').innerHTML = (lomba?.catatan||[]).map(c=>{
-      const p = lomba.peserta.find(p=>p.noLapak===c.noLapak);
-      return `<tr><td>${c.waktu}</td><td>${c.noLapak||'-'}</td><td>${p?p.nama:'?'}</td><td>${c.tipe}</td><td>${c.tipe==='super'?c.berat+' kg':(c.jumlah||0)+' ekor'}</td></tr>`;
-    }).reverse().join('');
+    document.getElementById('catatanTable').innerHTML = (lomba?.catatan||[]).map(c=>{ const p=lomba.peserta.find(p=>p.noLapak===c.noLapak); return `<tr><td>${c.waktu}</td><td>${c.noLapak||'-'}</td><td>${p?p.nama:'?'}</td><td>${c.tipe}</td><td>${c.tipe==='super'?c.berat+' kg':(c.jumlah||0)+' ekor'}</td></tr>`; }).reverse().join('');
   }
   window.mulaiLomba = () => {
     const lomba = getLomba(document.getElementById('selCatat').value);
@@ -367,7 +302,7 @@
   window.selesaiLomba = () => {
     const lomba = getLomba(document.getElementById('selCatat').value);
     if(!lomba || lomba.status!=='active') return;
-    lomba.status='completed'; lomba.actualEnd=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); refreshAll(); toast('Lomba selesai');
+    lomba.status='completed'; lomba.actualEnd=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); toast('Lomba selesai');
   };
 
   function getPesertaTerundi(lomba) { return (lomba?.peserta||[]).filter(p=>p.noLapak); }
@@ -408,7 +343,6 @@
     saveData(); closeModal('modalRamai'); renderCatatan();
   };
 
-  // Hasil
   function hitungJuara(lomba) {
     const superFish = (lomba.catatan||[]).filter(c=>c.tipe==='super').sort((a,b)=>b.berat-a.berat);
     const winners=[], used=new Set();
@@ -428,37 +362,6 @@
     div.innerHTML = `<h4>🏆 Juara Terberat</h4>${h.winners.map(w=>`<p>${w.rank}. Lapak ${w.noLapak} - ${w.nama} (${w.berat} kg) - ${w.waktu}</p>`).join('')}<h4>👑 Total Induk</h4>${h.induk?`<p>Lapak ${h.induk.noLapak} - ${h.induk.nama} (${h.induk.count} ekor)</p>`:'-'}<h4>📊 Ramai</h4><p>A: ${h.ramaiA} | B: ${h.ramaiB}</p>`;
   }
 
-  // Poster
-  function genPoster() {
-    const canvas = document.getElementById('posterCanvas'); const ctx=canvas.getContext('2d'); const W=540,H=960;
-    ctx.clearRect(0,0,W,H);
-    const lomba = getLomba(document.getElementById('selPoster').value);
-    const nama = document.getElementById('posterNama').value; const hp = document.getElementById('posterHP').value;
-    document.getElementById('btnDownload').disabled = !lomba;
-    // Background pemandangan (kode sama seperti sebelumnya, disingkat)
-    const sky=ctx.createLinearGradient(0,0,0,H*0.5); sky.addColorStop(0,'#FF7E5F'); sky.addColorStop(1,'#FFE0B2'); ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.5);
-    ctx.fillStyle='#8B5A2B'; ctx.beginPath(); ctx.moveTo(0,H*0.45); ctx.lineTo(120,H*0.25); ctx.lineTo(240,H*0.45); ctx.fill();
-    ctx.fillStyle='#A0522D'; ctx.beginPath(); ctx.moveTo(200,H*0.5); ctx.lineTo(340,H*0.28); ctx.lineTo(480,H*0.5); ctx.fill();
-    const water=ctx.createLinearGradient(0,H*0.48,0,H); water.addColorStop(0,'#2E8B57'); water.addColorStop(1,'#0D4F2B'); ctx.fillStyle=water; ctx.fillRect(0,H*0.48,W,H*0.52);
-    ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(30,120,W-60,H*0.65);
-    ctx.fillStyle='white'; ctx.font='bold 34px "Segoe UI"'; ctx.textAlign='center'; ctx.fillText('🐟 '+nama+' 🐟',W/2,180);
-    ctx.font='bold 18px "Segoe UI"'; ctx.fillText('📞 '+hp, W/2,220);
-    if(lomba){
-      ctx.fillStyle='#FFD700'; ctx.font='bold 22px "Segoe UI"'; ctx.fillText(lomba.tipe==='gaplean'?'LOMBA GAPLEAN':'LOMBA MINGGU',W/2,260);
-      ctx.fillStyle='white'; ctx.font='bold 20px "Segoe UI"'; ctx.fillText(lomba.nama,W/2,290);
-      ctx.fillText(`📅 ${lomba.tanggal}  ⏰ ${lomba.jamMulai}-${lomba.jamSelesai}`,W/2,320);
-      if(lomba.status==='completed'){
-        const h=hitungJuara(lomba); let y=370;
-        ctx.fillStyle='#FFD700'; ctx.fillText('🏆 HASIL',W/2,y); y+=30;
-        ctx.fillStyle='white'; ctx.font='16px "Segoe UI"';
-        h.winners.forEach(w=>{ ctx.fillText(`${w.rank}. Lapak ${w.noLapak} - ${w.nama} (${w.berat}kg)`,W/2,y); y+=24; });
-      }
-    }
-    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='13px "Segoe UI"'; ctx.fillText(nama+' - '+hp,W/2,H-20);
-  }
-  window.downloadPoster = () => { const a=document.createElement('a'); a.download='poster.png'; a.href=document.getElementById('posterCanvas').toDataURL(); a.click(); };
-
-  // Papan Skor TV
   function renderTV() {
     const lomba = getLomba(document.getElementById('selTV').value);
     const container = document.getElementById('tvContainer');
@@ -469,14 +372,14 @@
   }
   setInterval(()=>{ if(document.getElementById('panel-papan').classList.contains('active')) renderTV(); },5000);
 
-  function refreshAll() {
-    renderDashboard(); renderLomba();
-    ['selDaftar','selCatat','selHasil','selPoster','selTV'].forEach(populateSelect);
-    renderPeserta(); renderCatatan(); renderHasil(); genPoster(); renderTV();
-  }
   window.resetAllData = () => { if(confirm('Hapus SEMUA data?')) { data={lomba:[]}; saveData(); refreshAll(); toast('Data direset'); } };
 
-  // Init
+  function refreshAll() {
+    renderLomba();
+    ['selDaftar','selCatat','selHasil','selTV'].forEach(id => populateSelect(id));
+    renderPeserta(); renderCatatan(); renderHasil(); renderTV();
+  }
+
   loadData(); refreshAll();
 })();
 </script>
