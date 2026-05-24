@@ -6,9 +6,11 @@
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: #e8f0e8;
-  min-height: 100vh;
+  background-image: url('empang raja tega.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
 }
 
 /* Login Screen */
