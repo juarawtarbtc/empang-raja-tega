@@ -15,7 +15,7 @@
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, 'Roboto', sans-serif;
       min-height: 100vh;
-      background-image: url('image.png');
+      background-image: url('emapng raja tega.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -391,7 +391,7 @@
   <div class="form-group"><label>No Lapak (manual)</label><input type="number" id="fPLapak" min="1" max="40"></div>
   <input type="hidden" id="fPId"><input type="hidden" id="fCurrentLombaId"><button class="btn btn-primary" onclick="simpanPeserta()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalPeserta')">Batal</button></div></div>
 
-<div class="modal-overlay" id="modalSuper" style="display:none;"><div class="modal"><h3>Catat Ikan Super</h3><select id="fSuperPeserta"></select><input type="number" id="fSuperBerat" step="0.01" placeholder="Berat kg"><button class="btn btn-primary" onclick="simpanSuper()">Catat</button></div></div>
+<div class="modal-overlay" id="modalSuper" style="display:none;"><div class="modal"><h3>Catat Ikan Super</h3><select id="fSuperPeserta"></select><input type="number" id="fSuperBerat" step="0.01" placeholder="Berat (kg)"><button class="btn btn-primary" onclick="simpanSuper()">Catat</button></div></div>
 
 <div class="modal-overlay" id="modalRamai" style="display:none;"><div class="modal"><h3>Catat Ikan Ramai</h3>
   <select id="fRamaiGroup" onchange="isiPesertaGroup()"><option value="A">Group A</option><option value="B">Group B</option></select>
@@ -401,7 +401,7 @@
   <button class="btn btn-primary" onclick="simpanRamai()">Catat</button>
 </div></div>
 
-<div class="modal-overlay" id="modalEditCatatan" style="display:none;"><div class="modal"><h3 id="editCatatanTitle">Edit</h3><input type="hidden" id="editCatatanId"><input type="hidden" id="editCatatanLombaId"><input type="hidden" id="editCatatanTipe"><div id="editGroupBerat" style="display:none"><label>Berat kg</label><input type="number" id="editBerat" step="0.01"></div><div id="editGroupJumlah" style="display:none"><label>Jumlah ekor</label><input type="number" id="editJumlah" min="1"></div><div id="editGroupBeratRamai" style="display:none"><label>Berat total ramai (kg)</label><input type="number" id="editBeratRamai" step="0.01"></div><button class="btn btn-primary" onclick="simpanEditCatatan()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalEditCatatan')">Batal</button></div></div>
+<div class="modal-overlay" id="modalEditCatatan" style="display:none;"><div class="modal"><h3 id="editCatatanTitle">Edit</h3><input type="hidden" id="editCatatanId"><input type="hidden" id="editCatatanLombaId"><input type="hidden" id="editCatatanTipe"><div id="editGroupBerat" class="form-group"><label>Berat (kg)</label><input type="number" id="editBerat" step="0.01"></div><div id="editGroupJumlah" class="form-group" style="display:none;"><label>Jumlah</label><input type="number" id="editJumlah"></div><div id="editGroupBeratRamai" class="form-group" style="display:none;"><label>Berat Total (kg)</label><input type="number" id="editBeratRamai" step="0.01"></div><button class="btn btn-primary" onclick="simpanEditCatatan()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalEditCatatan')">Batal</button></div></div>
 
 <div class="modal-overlay" id="modalPilihJuaraRamai" style="display:none;"><div class="modal"><h3 id="pilihJuaraTitle">Pilih Juara Ikan Ramai</h3>
   <input type="hidden" id="pilihJuaraGroup">
@@ -492,7 +492,7 @@
     const allMenus = [
       { module: 'lomba', emoji: '📋', label: 'LOMBA', adminOnly: true },
       { module: 'pendaftaran', emoji: '📝', label: 'PESERTA', adminOnly: true },
-      { module: 'pencatatan', emoji: '🎣', label: 'CACATAN', adminOnly: true },
+      { module: 'pencatatan', emoji: '🎣', label: 'CATATAN', adminOnly: true },
       { module: 'hasil', emoji: '🏆', label: 'HASIL', adminOnly: false },
       { module: 'papan', emoji: '📺', label: 'TV SKOR', adminOnly: false },
       { module: 'reset', emoji: '🗑️', label: 'RESET', adminOnly: true },
@@ -651,7 +651,8 @@
     const lomba = getLomba(document.getElementById('selDaftar').value);
     const btnTambah = document.getElementById('btnTambahPeserta'), btnUndi = document.getElementById('btnUndi');
     if(!lomba) { document.getElementById('pesertaTable').innerHTML = ''; btnTambah.disabled=true; btnUndi.disabled=true; return; }
-    btnTambah.disabled = lomba.status !== 'upcoming';
+    // Izinkan menambah peserta kapan saja, tidak hanya saat upcoming
+    btnTambah.disabled = false;
     btnUndi.disabled = !(currentModeUndi === 'otomatis' && lomba.status === 'upcoming');
     const readonly = (currentModeUndi === 'otomatis');
     document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`<tr>
@@ -764,13 +765,13 @@
     lomba.catatan = lomba.catatan.filter(c=>c.id!==catId);
     saveData(); renderCatatan(); renderHasil(); renderTV(); toast('Dihapus');
   };
-  window.mulaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='upcoming') return; if(!l.peserta.some(p=>p.noLapak)) { toast('Undi lapak dulu'); return; } l.status='active'; l.actualStart=new Date().toLocaleString(); saveData(); renderCatatan(); toast('Lomba dimulai'); renderTV(); };
-  window.selesaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; l.status='completed'; l.actualEnd=new Date().toLocaleString(); saveData(); renderCatatan(); toast('Lomba selesai'); renderTV(); };
-  window.catatSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; const sel = document.getElementById('fSuperPeserta'); sel.innerHTML='<option>--Pilih--</option>'; l.peserta.filter(p=>p.noLapak).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`Lapak ${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); showModal('modalSuper'); };
-  window.simpanSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fSuperPeserta').value); const berat = parseFloat(document.getElementById('fSuperBerat').value); if(!no||!berat) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'super', berat, waktu:new Date().toLocaleTimeString()}); saveData(); closeModal('modalSuper'); renderCatatan(); renderTV(); };
+  window.mulaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='upcoming') return; if(!l.peserta.some(p=>p.noLapak)) { toast('Undi lapak dulu!'); return; } l.status='active'; l.actualStart=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); toast('Lomba dimulai'); };
+  window.selesaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; l.status='completed'; l.actualEnd=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); toast('Lomba selesai'); };
+  window.catatSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; const sel = document.getElementById('fSuperPeserta'); sel.innerHTML = '<option value="">-- Pilih --</option>'; (l.peserta||[]).filter(p=>p.noLapak).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); document.getElementById('fSuperBerat').value=''; showModal('modalSuper'); };
+  window.simpanSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fSuperPeserta').value); const berat = parseFloat(document.getElementById('fSuperBerat').value); if(!no || !berat) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'super', berat, jumlah:null, group:group(no), waktu:new Date().toLocaleTimeString('id-ID')}); saveData(); closeModal('modalSuper'); renderCatatan(); };
   window.catatRamai = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; isiPesertaGroup(); showModal('modalRamai'); };
-  window.isiPesertaGroup = () => { const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const grp = document.getElementById('fRamaiGroup').value; const sel = document.getElementById('fRamaiPeserta'); sel.innerHTML='<option>--Pilih--</option>'; l.peserta.filter(p=>p.noLapak && group(p.noLapak)===grp).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`Lapak ${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); };
-  window.simpanRamai = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fRamaiPeserta').value); const jml = parseInt(document.getElementById('fRamaiJumlah').value)||1; const berat = parseFloat(document.getElementById('fRamaiBerat').value)||0; if(!no) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'ramai', jumlah:jml, beratRamai:berat, waktu:new Date().toLocaleTimeString()}); saveData(); closeModal('modalRamai'); renderCatatan(); renderTV(); };
+  window.isiPesertaGroup = () => { const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const grp = document.getElementById('fRamaiGroup').value; const sel = document.getElementById('fRamaiPeserta'); sel.innerHTML = '<option value="">-- Pilih --</option>'; (l.peserta||[]).filter(p=>p.noLapak && group(p.noLapak)===grp).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); };
+  window.simpanRamai = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fRamaiPeserta').value); const jumlah = parseInt(document.getElementById('fRamaiJumlah').value)||1; const berat = parseFloat(document.getElementById('fRamaiBerat').value) || 0; if(!no) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'ramai', berat:null, jumlah, beratRamai: berat, group:group(no), waktu:new Date().toLocaleTimeString('id-ID')}); saveData(); closeModal('modalRamai'); renderCatatan(); };
 
   // Logika Juara Ramai (sama seperti sebelumnya)
   function hitungDataRamai(lomba) {
