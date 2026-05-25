@@ -3,457 +3,942 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>🐟 Empang Raja Tega</title>
+  <title>🐟 Empang Raja Tega | Arena Skill & Hoki</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:#e8f0e8;min-height:100vh;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* LATAR BELAKANG FULL COVER */
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, 'Roboto', sans-serif;
+      min-height: 100vh;
+      background-image: url('image.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-color: #0a2f1a;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(2px);
+      z-index: -1;
+    }
+
+    #loginScreen, #appMain {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Login */
     #loginScreen {
-      display:flex;align-items:center;justify-content:center;min-height:100vh;
-      background:linear-gradient(135deg, #0d4f2b, #1a6b3c); 
-      background-image:url('empang%20raja%20tega2.jpg');
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
-      padding:20px;
-      position:relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      background: transparent;
     }
-    #loginScreen::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.4);
-      z-index:1;
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(2px);
+      border-radius: 32px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      border: 1px solid rgba(232, 168, 23, 0.5);
     }
-    .login-card{background:white;border-radius:20px;padding:30px 25px;width:100%;max-width:360px;box-shadow:0 15px 40px rgba(0,0,0,0.3);text-align:center;position:relative;z-index:2;}
-    .login-card h2{color:#0d4f2b;margin-bottom:25px;font-size:1.8rem;}
-    .login-card input{width:100%;padding:14px;margin:10px 0;border:2px solid #d4e0d4;border-radius:14px;font-size:1rem;background:#fafcfa;}
-    .login-card button{width:100%;padding:16px;background:#e8a817;border:none;border-radius:30px;font-weight:700;font-size:1.1rem;color:#3d2e00;cursor:pointer;margin-top:10px;}
-    .login-error{color:#c0392b;font-size:0.9rem;margin-top:8px;}
 
-    #appMain{display:none;min-height:100vh;background:#e8f0e8;}
-    .header{background:linear-gradient(135deg, #0d4f2b, #1a6b3c);color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-    .header .logo{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:700;}
-    .header button{background:rgba(255,255,255,0.15);border:none;color:white;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;}
+    .login-card h2 {
+      color: #0a4628;
+      margin-bottom: 24px;
+      font-size: 1.9rem;
+      font-weight: 800;
+    }
 
-    .dashboard{padding:20px;display:block;}
-    .icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:400px;margin:0 auto;}
-    .icon-item{background:white;border-radius:18px;padding:20px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid #d4e0d4;cursor:pointer;transition:0.2s;}
-    .icon-item:active{transform:scale(0.96);background:#f0f9f3;}
-    .icon-item .emoji{font-size:2.5rem;display:block;margin-bottom:8px;}
-    .icon-item .label{font-weight:600;font-size:0.85rem;color:#1a6b3c;}
+    .login-card input {
+      width: 100%;
+      padding: 14px 16px;
+      margin: 12px 0;
+      border: 2px solid #dde6dd;
+      border-radius: 40px;
+      font-size: 1rem;
+    }
 
-    .panel{display:none;padding:16px;padding-bottom:30px;}
-    .panel.active{display:block;}
-    .back-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;margin-right:10px;vertical-align:middle;color:#1a6b3c;}
-    .panel-header{display:flex;align-items:center;margin-bottom:16px;}
-    .panel-header h2{font-size:1.3rem;color:#0d4f2b;}
+    .login-card button {
+      width: 100%;
+      padding: 14px;
+      background: #e8a817;
+      border: none;
+      border-radius: 60px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
 
-    .card{background:white;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #d4e0d4;}
-    .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 18px;border:none;border-radius:30px;font-weight:600;font-size:0.9rem;cursor:pointer;transition:0.2s;background:white;color:#1a6b3c;}
-    .btn-primary{background:#1a6b3c;color:white;border:none;}
-    .btn-accent{background:#e8a817;color:#3d2e00;border:none;}
-    .btn-danger{background:#c0392b;color:white;border:none;}
-    .btn-sm{padding:8px 14px;font-size:0.8rem;}
-    .form-group{margin-bottom:14px;}
-    .form-group label{display:block;font-weight:600;margin-bottom:5px;font-size:0.9rem;}
-    .form-group input,.form-group select{width:100%;padding:12px;border:2px solid #d4e0d4;border-radius:10px;font-size:1rem;background:#fafcfa;}
-    table{width:100%;border-collapse:collapse;font-size:0.8rem;min-width:500px;}
-    th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #d4e0d4;}
-    th{background:#f7faf7;font-weight:700;}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:10px;}
-    .modal{background:white;border-radius:18px;padding:20px;max-width:95vw;width:100%;max-height:85vh;overflow-y:auto;}
-    .scoreboard{background:#0d2b1a;color:white;padding:20px;border-radius:14px;text-align:center;border:2px solid #e8a817;}
-    .scoreboard h2{color:#e8a817;font-size:1.5rem;}
-    .scoreboard table{color:white;min-width:auto;font-size:0.9rem;}
-    .scoreboard th{background:rgba(255,255,255,0.15);color:#f5c84e;}
-    .toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:white;padding:10px 20px;border-radius:25px;z-index:300;font-weight:600;}
-    .mode-selector label{font-weight:600;margin-right:15px;font-size:0.9rem;}
-    .mode-selector input{margin-right:5px;}
+    /* App Main */
+    #appMain {
+      min-height: 100vh;
+      background: transparent;
+      display: none;
+    }
+
+    .header {
+      background: rgba(13, 79, 43, 0.92);
+      backdrop-filter: blur(12px);
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e8a817;
+    }
+
+    .header .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .header button {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      color: #ffefb9;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      padding: 28px 20px;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .icon-item {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(4px);
+      border-radius: 28px;
+      padding: 20px 8px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid rgba(232, 168, 23, 0.6);
+    }
+
+    .icon-item .emoji {
+      font-size: 2.8rem;
+    }
+
+    .panel {
+      display: none;
+      padding: 18px;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 22px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: rgba(255,255,240,0.9);
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      border-radius: 60px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      background: white;
+      color: #1a6b3c;
+      border: 2px solid #1a6b3c;
+    }
+
+    .btn-primary {
+      background: #1a6b3c;
+      color: white;
+      border: none;
+    }
+
+    .btn-accent {
+      background: #e8a817;
+      color: #2c2400;
+      border: none;
+    }
+
+    .btn-danger {
+      background: #c0392b;
+      color: white;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #d4e2d4;
+      border-radius: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th, td {
+      padding: 10px 6px;
+      border-bottom: 1px solid #e0ecd9;
+      text-align: left;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 32px;
+      padding: 24px;
+      max-width: 95vw;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-top: 6px solid #e8a817;
+    }
+
+    .scoreboard {
+      background: linear-gradient(145deg, #092719, #15462e);
+      color: white;
+      padding: 24px;
+      border-radius: 32px;
+      text-align: center;
+      border: 2px solid #e8a817;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2a1c;
+      color: #ffeaac;
+      padding: 10px 22px;
+      border-radius: 60px;
+      z-index: 300;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
-    <h2>🐟 Empang Raja Tega</h2>
-    <input type="text" id="loginId" placeholder="ID Admin" value="rayhan">
-    <input type="password" id="loginPass" placeholder="Password" value="123456">
-    <button onclick="doLogin()">Masuk</button>
+    <h2>🐟 EMPANG RAJA TEGA</h2>
+    <input type="text" id="loginId" placeholder="ID Admin">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button onclick="doLogin()">⚡ MASUK ARENA ⚡</button>
     <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="appMain">
   <header class="header">
-    <div class="logo"><span>🐟</span> Empang Raja Tega</div>
-    <button onclick="doLogout()">🚪 Keluar</button>
+    <div class="logo">🎣 Empang Raja Tega</div>
+    <button onclick="doLogout()">🚪 KELUAR</button>
   </header>
 
-  <!-- Dashboard Icon Grid (tanpa Poster) -->
   <div class="dashboard active" id="dashboard">
-    <div class="icon-grid">
-      <div class="icon-item" onclick="openModule('lomba')"><span class="emoji">📋</span><span class="label">Lomba</span></div>
-      <div class="icon-item" onclick="openModule('pendaftaran')"><span class="emoji">📝</span><span class="label">Peserta</span></div>
-      <div class="icon-item" onclick="openModule('pencatatan')"><span class="emoji">🎣</span><span class="label">Catat</span></div>
-      <div class="icon-item" onclick="openModule('hasil')"><span class="emoji">🏆</span><span class="label">Hasil</span></div>
-      <div class="icon-item" onclick="openModule('papan')"><span class="emoji">📺</span><span class="label">TV Skor</span></div>
-      <div class="icon-item" onclick="resetAllData()"><span class="emoji">🗑️</span><span class="label">Reset</span></div>
-      <div class="icon-item" onclick="doLogout()"><span class="emoji">🚪</span><span class="label">Logout</span></div>
+    <div class="icon-grid" id="menuGrid">
+      <!-- Menu akan di-generate berdasarkan role -->
     </div>
   </div>
 
   <!-- Panel Lomba -->
   <div class="panel" id="panel-lomba">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📋 Kelola Lomba</h2></div>
-    <div class="card"><button class="btn btn-primary btn-sm" onclick="showModal('modalLomba')">+ Lomba Baru</button></div>
-    <div class="card"><div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Juara</th><th>Aksi</th></tr></thead><tbody id="lombaTable"></tbody></table></div></div>
+    <div class="card"><button class="btn btn-primary btn-sm" onclick="bukaModalLombaBaru()">+ Lomba Baru</button></div>
+    <div class="card"><div style="overflow-x:auto;"><table><thead><tr><th>Nama</th><th>Tipe</th><th>Tanggal</th><th>Status</th><th>Juara Super</th><th>Aksi</th></tr></thead><tbody id="lombaTable"></tbody></table></div></div>
   </div>
 
-  <!-- Panel Pendaftaran (dengan mode undian) -->
+  <!-- Panel Pendaftaran -->
   <div class="panel" id="panel-pendaftaran">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📝 Pendaftaran</h2></div>
     <div class="card">
-      <div class="form-group"><label>Pilih Lomba</label><select id="selDaftar" onchange="renderPeserta()"><option value="">-- Pilih --</option></select></div>
-      
-      <!-- Mode Pengisian Lapak -->
-      <div class="mode-selector" style="margin: 12px 0; padding: 10px; background: #f9fdf9; border-radius: 10px;">
+      <div class="form-group"><label>Pilih Lomba</label><select id="selDaftar" onchange="renderPeserta()"></select></div>
+      <div class="mode-selector" style="margin:12px 0">
         <label><input type="radio" name="modeUndi" value="manual" checked onchange="changeModeUndi('manual')"> ✍️ Manual</label>
-        <label style="margin-left: 20px;"><input type="radio" name="modeUndi" value="otomatis" onchange="changeModeUndi('otomatis')"> 🎲 Otomatis</label>
+        <label><input type="radio" name="modeUndi" value="otomatis" onchange="changeModeUndi('otomatis')"> 🎲 Otomatis</label>
       </div>
-
-      <button class="btn btn-accent btn-sm" onclick="showModal('modalPeserta')" id="btnTambahPeserta" disabled>+ Peserta</button>
+      <button class="btn btn-accent btn-sm" onclick="bukaModalPeserta()" id="btnTambahPeserta" disabled>+ Tambah Peserta</button>
       <button class="btn btn-outline btn-sm" onclick="undiOtomatis()" id="btnUndi" disabled>🎲 Undi Otomatis</button>
-      <div style="overflow-x:auto;"><table><thead><tr><th>#</th><th>Nama</th><th>No HP</th><th>No Lapak</th><th>Group</th><th>Booking</th><th>Aksi</th></tr></thead><tbody id="pesertaTable"></tbody></table></div>
+      <div style="overflow-x:auto;"><table id="pesertaTable"><thead><tr><th>#</th><th>Nama</th><th>HP</th><th>Lapak</th><th>Group</th><th>Booking</th><th>Aksi</th></tr></thead><tbody></tbody></table></div>
     </div>
   </div>
 
   <!-- Panel Pencatatan -->
   <div class="panel" id="panel-pencatatan">
-    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🎣 Pencatatan</h2></div>
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🎣 Catat Tangkapan</h2></div>
     <div class="card">
-      <div class="form-group"><label>Pilih Lomba</label><select id="selCatat" onchange="renderCatatan()"><option value="">-- Pilih --</option></select></div>
+      <div class="form-group"><label>Pilih Lomba</label><select id="selCatat" onchange="renderCatatan()"></select></div>
       <div id="infoCatatan"></div>
-      <div id="aksiCatatan" style="display:none;">
-        <button class="btn btn-primary btn-sm" onclick="catatSuper()">🐟 Super</button>
-        <button class="btn btn-outline btn-sm" onclick="catatRamai()">🐠 Ramai</button>
-        <button class="btn btn-accent btn-sm" onclick="mulaiLomba()" id="btnMulai">▶️ Mulai</button>
-        <button class="btn btn-danger btn-sm" onclick="selesaiLomba()" id="btnSelesai">⏹️ Selesai</button>
+      <div id="aksiCatatan" style="display:none; gap:12px; flex-wrap:wrap; margin:12px 0">
+        <button class="btn btn-primary" onclick="catatSuper()">🐟 SUPER</button>
+        <button class="btn btn-outline" onclick="catatRamai()">🐠 RAMAI</button>
+        <button class="btn btn-accent" onclick="mulaiLomba()" id="btnMulai">▶️ Mulai</button>
+        <button class="btn btn-danger" onclick="selesaiLomba()" id="btnSelesai">⏹️ Selesai</button>
       </div>
-      <div style="overflow-x:auto;"><table><thead><tr><th>Waktu</th><th>Lapak</th><th>Nama</th><th>Tipe</th><th>Berat/Jml</th></tr></thead><tbody id="catatanTable"></tbody></table></div>
+      <div style="overflow-x:auto;"><table id="catatanTable"><thead><tr><th>Waktu</th><th>Lapak</th><th>Nama</th><th>Tipe</th><th>Berat/Jml</th><th>Aksi</th></tr></thead><tbody></tbody></table></div>
     </div>
   </div>
 
   <!-- Panel Hasil -->
   <div class="panel" id="panel-hasil">
-    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🏆 Hasil</h2></div>
+    <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>🏆 Hasil Akhir</h2></div>
     <div class="card">
-      <div class="form-group"><label>Pilih Lomba</label><select id="selHasil" onchange="renderHasil()"><option value="">-- Pilih --</option></select></div>
+      <div class="form-group"><label>Pilih Lomba</label><select id="selHasil" onchange="renderHasil()"></select></div>
       <div id="hasilContent"></div>
     </div>
   </div>
 
-  <!-- Panel Papan Skor TV -->
+  <!-- Panel TV -->
   <div class="panel" id="panel-papan">
     <div class="panel-header"><button class="back-btn" onclick="goHome()">←</button><h2>📺 Papan Skor TV</h2></div>
     <div class="card">
-      <select id="selTV" onchange="renderTV()" style="width:100%;margin-bottom:12px;"><option value="">-- Pilih Lomba --</option></select>
+      <select id="selTV" onchange="renderTV()" style="width:100%; margin-bottom:16px;"></select>
       <div id="tvContainer"></div>
     </div>
   </div>
 </div>
 
 <!-- MODALS (sama seperti sebelumnya) -->
-<div class="modal-overlay" id="modalLomba" style="display:none;"><div class="modal"><h3 id="judulLomba">Buat Lomba</h3>
-  <div class="form-group"><label>Tipe</label><select id="fTipe"><option value="gaplean">Gaplean (Senin/Rabu/Jumat)</option><option value="sunday">Minggu</option></select></div>
-  <div class="form-group"><label>Nama</label><input id="fNama"></div>
+<div class="modal-overlay" id="modalLomba" style="display:none;"><div class="modal"><h3 id="judulLomba">Buat Lomba Baru</h3>
+  <div class="form-group"><label>Tipe</label><select id="fTipe"><option value="gaplean">Gaplean</option><option value="sunday">Minggu</option></select></div>
+  <div class="form-group"><label>Nama Lomba</label><input id="fNama"></div>
   <div class="form-group"><label>Tanggal</label><input type="date" id="fTanggal"></div>
-  <div style="display:flex;gap:8px;"><div class="form-group" style="flex:1;"><label>Mulai</label><input type="time" id="fMulai" value="08:00"></div><div class="form-group" style="flex:1;"><label>Selesai</label><input type="time" id="fSelesai" value="16:00"></div></div>
-  <div class="form-group"><label>Jumlah Juara</label><input type="number" id="fJuara" value="4" min="1" max="10"></div>
+  <div style="display:flex; gap:10px;"><div class="form-group"><label>Mulai</label><input type="time" id="fMulai" value="08:00"></div><div class="form-group"><label>Selesai</label><input type="time" id="fSelesai" value="16:00"></div></div>
+  <div class="form-group"><label>Jumlah Juara Ikan Super</label><input type="number" id="fJuara" value="4" min="1"></div>
+  <div class="form-group"><label>Jika ikan ramai jumlahnya sama</label>
+    <select id="fTieBreakerRamai">
+      <option value="timbang">Timbang semua Ikan Ramai</option>
+      <option value="panitia">Panitia menentukan Juara Ikan Ramai</option>
+    </select>
+  </div>
+  <div class="form-group"><label><input type="checkbox" id="fHitungInduk" checked> Hitung Total Induk Terbanyak (Raja Induk)</label></div>
   <input type="hidden" id="fId"><button class="btn btn-primary" onclick="simpanLomba()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalLomba')">Batal</button></div></div>
 
 <div class="modal-overlay" id="modalPeserta" style="display:none;"><div class="modal"><h3>Tambah/Edit Peserta</h3>
-  <div class="form-group"><label>Nama</label><input id="fPNama"></div>
+  <div class="form-group"><label>Nama</label><input list="daftarPemancing" id="fPNama" placeholder="Ketik atau pilih"><datalist id="daftarPemancing"></datalist></div>
   <div class="form-group"><label>No HP</label><input id="fPHP"></div>
   <div class="form-group"><label>Booking</label><select id="fPBooking"><option value="lunas">Lunas</option><option value="dp">DP</option><option value="belum">Belum</option></select></div>
-  <div class="form-group"><label>No Lapak (manual)</label><input type="number" id="fPLapak" min="1" max="40" placeholder="Kosongkan jika belum diundi"></div>
-  <input type="hidden" id="fPId"><button class="btn btn-primary" onclick="simpanPeserta()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalPeserta')">Batal</button></div></div>
+  <div class="form-group"><label>No Lapak (manual)</label><input type="number" id="fPLapak" min="1" max="40"></div>
+  <input type="hidden" id="fPId"><input type="hidden" id="fCurrentLombaId"><button class="btn btn-primary" onclick="simpanPeserta()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalPeserta')">Batal</button></div></div>
 
-<div class="modal-overlay" id="modalSuper" style="display:none;"><div class="modal"><h3>Ikan Super</h3>
-  <div class="form-group"><label>Pilih Peserta</label><select id="fSuperPeserta"></select></div>
-  <div class="form-group"><label>Berat (kg)</label><input type="number" id="fSuperBerat" step="0.01"></div>
-  <button class="btn btn-primary" onclick="simpanSuper()">Catat</button><button class="btn btn-outline" onclick="closeModal('modalSuper')">Batal</button></div></div>
+<div class="modal-overlay" id="modalSuper" style="display:none;"><div class="modal"><h3>Catat Ikan Super</h3><select id="fSuperPeserta"></select><input type="number" id="fSuperBerat" step="0.01" placeholder="Berat kg"><button class="btn btn-primary" onclick="simpanSuper()">Catat</button></div></div>
 
-<div class="modal-overlay" id="modalRamai" style="display:none;"><div class="modal"><h3>Ikan Ramai</h3>
-  <div class="form-group"><label>Group</label><select id="fRamaiGroup" onchange="isiPesertaGroup()"><option value="A">A (1-20)</option><option value="B">B (21-40)</option></select></div>
-  <div class="form-group"><label>Pilih Peserta</label><select id="fRamaiPeserta"></select></div>
-  <div class="form-group"><label>Jumlah</label><input type="number" id="fRamaiJumlah" value="1" min="1"></div>
-  <button class="btn btn-primary" onclick="simpanRamai()">Catat</button><button class="btn btn-outline" onclick="closeModal('modalRamai')">Batal</button></div></div>
+<div class="modal-overlay" id="modalRamai" style="display:none;"><div class="modal"><h3>Catat Ikan Ramai</h3>
+  <select id="fRamaiGroup" onchange="isiPesertaGroup()"><option value="A">Group A</option><option value="B">Group B</option></select>
+  <select id="fRamaiPeserta"></select>
+  <input type="number" id="fRamaiJumlah" value="1" min="1" placeholder="Jumlah ekor">
+  <input type="number" id="fRamaiBerat" step="0.01" placeholder="Berat total (kg) untuk timbang">
+  <button class="btn btn-primary" onclick="simpanRamai()">Catat</button>
+</div></div>
+
+<div class="modal-overlay" id="modalEditCatatan" style="display:none;"><div class="modal"><h3 id="editCatatanTitle">Edit</h3><input type="hidden" id="editCatatanId"><input type="hidden" id="editCatatanLombaId"><input type="hidden" id="editCatatanTipe"><div id="editGroupBerat" style="display:none"><label>Berat kg</label><input type="number" id="editBerat" step="0.01"></div><div id="editGroupJumlah" style="display:none"><label>Jumlah ekor</label><input type="number" id="editJumlah" min="1"></div><div id="editGroupBeratRamai" style="display:none"><label>Berat total ramai (kg)</label><input type="number" id="editBeratRamai" step="0.01"></div><button class="btn btn-primary" onclick="simpanEditCatatan()">Simpan</button><button class="btn btn-outline" onclick="closeModal('modalEditCatatan')">Batal</button></div></div>
+
+<div class="modal-overlay" id="modalPilihJuaraRamai" style="display:none;"><div class="modal"><h3 id="pilihJuaraTitle">Pilih Juara Ikan Ramai</h3>
+  <input type="hidden" id="pilihJuaraGroup">
+  <input type="hidden" id="pilihJuaraLombaId">
+  <div id="daftarKandidatJuara"></div>
+  <button class="btn btn-primary" onclick="simpanPilihanJuara()">Tetapkan Juara</button>
+  <button class="btn btn-outline" onclick="closeModal('modalPilihJuaraRamai')">Batal</button>
+</div></div>
 
 <script>
 (function() {
-  const STORAGE = 'empang_raja_tega2';
+  const STORAGE = 'empang_raja_tega_v3';
   const TOTAL_LAPAK = 40;
-  let data = { lomba:[] };
-  
-  // Mode undian global: 'manual' atau 'otomatis'
+  let data = { lomba: [] };
   let currentModeUndi = 'manual';
+  let currentRole = null; // 'admin' atau 'viewer'
 
-  // Auth
+  function loadData() { try { const r = localStorage.getItem(STORAGE); if(r) data = JSON.parse(r); } catch(e) { data = { lomba: [] }; } }
+  function saveData() { localStorage.setItem(STORAGE, JSON.stringify(data)); }
+  function getLomba(id) { return data.lomba.find(l => l.id === id); }
+  function genId() { return 'lmb_' + Date.now() + '_' + Math.random().toString(36).substr(2,6); }
+  function group(no) { return no <= 20 ? 'A' : 'B'; }
+  function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2300); }
+  window.showModal = (id) => document.getElementById(id).style.display = 'flex';
+  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+
+  // Daftar pemancing unik & urut abjad
+  function getAllPemancing() {
+    const names = new Set();
+    data.lomba.forEach(lomba => {
+      (lomba.peserta || []).forEach(p => { if(p.nama) names.add(p.nama.trim()); });
+    });
+    return Array.from(names).sort((a,b)=>a.localeCompare(b));
+  }
+  function updateDatalistPemancing() {
+    const datalist = document.getElementById('daftarPemancing');
+    datalist.innerHTML = '';
+    getAllPemancing().forEach(n => { const opt = document.createElement('option'); opt.value = n; datalist.appendChild(opt); });
+  }
+
+  // LOGIN dengan role
   window.doLogin = () => {
-    if(document.getElementById('loginId').value.trim()==='rayhan' && document.getElementById('loginPass').value.trim()==='123456'){
-      sessionStorage.setItem('empang_logged','true');
-      document.getElementById('loginScreen').style.display='none';
-      document.getElementById('appMain').style.display='block';
+    const id = document.getElementById('loginId').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    if(id === 'rayhan' && pass === '123456') {
+      currentRole = 'admin';
+      sessionStorage.setItem('empang_logged', 'true');
+      sessionStorage.setItem('empang_role', 'admin');
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appMain').style.display = 'block';
       loadData(); refreshAll();
-    }else{ document.getElementById('loginError').textContent='ID atau password salah!'; }
+      toast("Selamat datang Admin!");
+    } else if(id === 'raja' && pass === 'tega') {
+      currentRole = 'viewer';
+      sessionStorage.setItem('empang_logged', 'true');
+      sessionStorage.setItem('empang_role', 'viewer');
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appMain').style.display = 'block';
+      loadData(); refreshAll();
+      toast("Selamat datang, Anda hanya bisa melihat hasil dan TV.");
+    } else {
+      document.getElementById('loginError').innerText = 'ID atau password salah!';
+    }
   };
-  window.doLogout = () => { sessionStorage.removeItem('empang_logged'); location.reload(); };
 
-  if(sessionStorage.getItem('empang_logged')==='true'){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('appMain').style.display='block';
+  window.doLogout = () => {
+    sessionStorage.removeItem('empang_logged');
+    sessionStorage.removeItem('empang_role');
+    currentRole = null;
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('appMain').style.display = 'none';
+    document.getElementById('loginId').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginError').innerText = '';
+  };
+
+  if(sessionStorage.getItem('empang_logged') === 'true') {
+    currentRole = sessionStorage.getItem('empang_role') || 'viewer';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appMain').style.display = 'block';
     loadData(); refreshAll();
   }
 
-  function loadData(){ try{ const r=localStorage.getItem(STORAGE); if(r) data=JSON.parse(r); }catch(e){data={lomba:[]}} }
-  function saveData(){ localStorage.setItem(STORAGE, JSON.stringify(data)); }
-  function getLomba(id){ return data.lomba.find(l=>l.id===id); }
-  function genId(){ return 'lmb_'+Date.now()+Math.random().toString(36); }
-  function group(no){ return no<=20?'A':'B'; }
-  function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
-  window.showModal = (id) => document.getElementById(id).style.display='flex';
-  window.closeModal = (id) => document.getElementById(id).style.display='none';
+  // Generate menu berdasarkan role
+  function generateMenu() {
+    const grid = document.getElementById('menuGrid');
+    grid.innerHTML = '';
+    const allMenus = [
+      { module: 'lomba', emoji: '📋', label: 'LOMBA', adminOnly: true },
+      { module: 'pendaftaran', emoji: '📝', label: 'PESERTA', adminOnly: true },
+      { module: 'pencatatan', emoji: '🎣', label: 'CACATAN', adminOnly: true },
+      { module: 'hasil', emoji: '🏆', label: 'HASIL', adminOnly: false },
+      { module: 'papan', emoji: '📺', label: 'TV SKOR', adminOnly: false },
+      { module: 'reset', emoji: '🗑️', label: 'RESET', adminOnly: true },
+      { module: 'logout', emoji: '🚪', label: 'LOGOUT', adminOnly: false }
+    ];
+    for(let m of allMenus) {
+      if(m.adminOnly && currentRole !== 'admin') continue;
+      const div = document.createElement('div');
+      div.className = 'icon-item';
+      if(m.module === 'logout') div.onclick = () => doLogout();
+      else if(m.module === 'reset') div.onclick = () => resetAllData();
+      else div.onclick = () => openModule(m.module);
+      div.innerHTML = `<div class="emoji">${m.emoji}</div><div>${m.label}</div>`;
+      grid.appendChild(div);
+    }
+  }
 
-  // Navigasi modul
-  window.openModule = (module) => {
+  // Buka modal lomba baru hanya untuk admin
+  window.bukaModalLombaBaru = () => {
+    if(currentRole !== 'admin') { toast('Akses ditolak'); return; }
+    document.getElementById('fId').value = '';
+    document.getElementById('fNama').value = '';
+    document.getElementById('fTanggal').value = '';
+    document.getElementById('fTipe').value = 'gaplean';
+    document.getElementById('fMulai').value = '08:00';
+    document.getElementById('fSelesai').value = '16:00';
+    document.getElementById('fJuara').value = '4';
+    document.getElementById('fTieBreakerRamai').value = 'timbang';
+    document.getElementById('fHitungInduk').checked = true;
+    document.getElementById('judulLomba').textContent = 'Buat Lomba Baru';
+    showModal('modalLomba');
+  };
+
+  window.openModule = (m) => {
     document.getElementById('dashboard').style.display = 'none';
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+module).classList.add('active');
-    if(module==='lomba') renderLomba();
-    else if(module==='pendaftaran') { populateSelect('selDaftar'); renderPeserta(); }
-    else if(module==='pencatatan') { populateSelect('selCatat'); renderCatatan(); }
-    else if(module==='hasil') { populateSelect('selHasil'); renderHasil(); }
-    else if(module==='papan') { populateSelect('selTV'); renderTV(); }
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-'+m).classList.add('active');
+    if(m==='lomba') renderLomba();
+    else if(m==='pendaftaran') { populateSelect('selDaftar'); renderPeserta(); }
+    else if(m==='pencatatan') { populateSelect('selCatat'); renderCatatan(); }
+    else if(m==='hasil') { populateSelect('selHasil'); renderHasil(); }
+    else if(m==='papan') { populateSelect('selTV'); renderTV(); }
   };
   window.goHome = () => {
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.getElementById('dashboard').style.display = 'block';
   };
-
-  // Mode undian change handler
-  window.changeModeUndi = (mode) => {
-    currentModeUndi = mode;
-    // Update radio button visual (already done by browser)
-    // Render ulang peserta untuk mengaktifkan/menonaktifkan input
-    renderPeserta();
-  };
+  window.changeModeUndi = (mode) => { currentModeUndi = mode; renderPeserta(); };
 
   function populateSelect(id) {
-    const sel = document.getElementById(id); const v = sel.value;
+    const sel = document.getElementById(id);
+    const val = sel.value;
     sel.innerHTML = '<option value="">-- Pilih Lomba --</option>';
-    data.lomba.forEach(l=>{ const o=document.createElement('option'); o.value=l.id; o.textContent=`${l.nama} | ${l.tipe} | ${l.tanggal} | ${l.status}`; sel.appendChild(o); });
-    if(v && data.lomba.some(l=>l.id===v)) sel.value=v;
+    data.lomba.forEach(l => { const o = document.createElement('option'); o.value = l.id; o.textContent = `${l.nama} | ${l.tipe} | ${l.tanggal} | ${l.status}`; sel.appendChild(o); });
+    if(val && data.lomba.some(l=>l.id===val)) sel.value = val;
   }
 
   function renderLomba() {
-    document.getElementById('lombaTable').innerHTML = data.lomba.map(l=>`<tr><td>${l.nama}</td><td>${l.tipe}</td><td>${l.tanggal}</td><td>${l.status}</td><td>${l.jmlJuara}</td><td><button class="btn btn-sm btn-outline" onclick="editLomba('${l.id}')">✏️</button> <button class="btn btn-sm btn-danger" onclick="hapusLomba('${l.id}')">🗑️</button></td></tr>`).join('');
+    if(currentRole !== 'admin') return;
+    const tbody = document.getElementById('lombaTable');
+    tbody.innerHTML = data.lomba.map(l => `<tr>
+      <td>${l.nama}</td>
+      <td>${l.tipe}</td>
+      <td>${l.tanggal}</td>
+      <td>${l.status}</td>
+      <td>${l.jmlJuara}</td>
+      <td><button class="btn btn-sm" onclick="editLomba('${l.id}')">✏️</button></td>
+    </tr>`).join('');
   }
   window.editLomba = (id) => {
-    const l = getLomba(id); if(!l) return;
-    document.getElementById('fId').value=l.id; document.getElementById('fTipe').value=l.tipe;
-    document.getElementById('fNama').value=l.nama; document.getElementById('fTanggal').value=l.tanggal;
-    document.getElementById('fMulai').value=l.jamMulai; document.getElementById('fSelesai').value=l.jamSelesai;
-    document.getElementById('fJuara').value=l.jmlJuara;
-    document.getElementById('judulLomba').textContent='Edit Lomba'; showModal('modalLomba');
-  };
-  window.hapusLomba = (id) => {
-    if(confirm('Hapus lomba ini?')) {
-      data.lomba = data.lomba.filter(l=>l.id!==id);
-      saveData(); renderLomba(); populateSelect('selDaftar'); populateSelect('selCatat'); populateSelect('selHasil'); populateSelect('selTV'); toast('Lomba dihapus');
-    }
+    if(currentRole !== 'admin') return;
+    const l = getLomba(id);
+    if(!l) return;
+    document.getElementById('fId').value = l.id;
+    document.getElementById('fTipe').value = l.tipe;
+    document.getElementById('fNama').value = l.nama;
+    document.getElementById('fTanggal').value = l.tanggal;
+    document.getElementById('fMulai').value = l.jamMulai;
+    document.getElementById('fSelesai').value = l.jamSelesai;
+    document.getElementById('fJuara').value = l.jmlJuara;
+    document.getElementById('fTieBreakerRamai').value = l.tieBreakerRamai || 'timbang';
+    document.getElementById('fHitungInduk').checked = l.hitungInduk !== false;
+    document.getElementById('judulLomba').textContent = 'Edit Lomba';
+    showModal('modalLomba');
   };
   window.simpanLomba = () => {
+    if(currentRole !== 'admin') return;
     const id = document.getElementById('fId').value;
     const obj = {
       id: id || genId(), tipe: document.getElementById('fTipe').value,
       nama: document.getElementById('fNama').value.trim(), tanggal: document.getElementById('fTanggal').value,
       jamMulai: document.getElementById('fMulai').value, jamSelesai: document.getElementById('fSelesai').value,
       totalLapak: TOTAL_LAPAK, jmlJuara: parseInt(document.getElementById('fJuara').value)||4,
-      status:'upcoming', actualStart:null, actualEnd:null, peserta:[], catatan:[]
+      tieBreakerRamai: document.getElementById('fTieBreakerRamai').value,
+      hitungInduk: document.getElementById('fHitungInduk').checked,
+      juaraRamaiA: null, juaraRamaiB: null,
+      status: 'upcoming', actualStart: null, actualEnd: null, peserta: [], catatan: []
     };
-    if(id) { const idx = data.lomba.findIndex(l=>l.id===id); if(idx!==-1) { obj.peserta=data.lomba[idx].peserta; obj.catatan=data.lomba[idx].catatan; obj.status=data.lomba[idx].status; data.lomba[idx]=obj; } }
-    else data.lomba.push(obj);
-    saveData(); closeModal('modalLomba'); toast('Lomba disimpan'); renderLomba(); populateSelect('selDaftar'); populateSelect('selCatat'); populateSelect('selHasil'); populateSelect('selTV');
+    if(id) {
+      const idx = data.lomba.findIndex(l=>l.id===id);
+      if(idx!==-1) {
+        obj.peserta = data.lomba[idx].peserta;
+        obj.catatan = data.lomba[idx].catatan;
+        obj.status = data.lomba[idx].status;
+        obj.juaraRamaiA = data.lomba[idx].juaraRamaiA;
+        obj.juaraRamaiB = data.lomba[idx].juaraRamaiB;
+        data.lomba[idx] = obj;
+      }
+    } else data.lomba.push(obj);
+    saveData(); closeModal('modalLomba'); toast('Lomba tersimpan');
+    renderLomba(); ['selDaftar','selCatat','selHasil','selTV'].forEach(populateSelect);
   };
 
+  window.bukaModalPeserta = () => {
+    if(currentRole !== 'admin') return;
+    const lomba = getLomba(document.getElementById('selDaftar').value);
+    if(!lomba) return;
+    document.getElementById('fCurrentLombaId').value = lomba.id;
+    document.getElementById('fPId').value = '';
+    document.getElementById('fPNama').value = '';
+    document.getElementById('fPHP').value = '';
+    document.getElementById('fPBooking').value = 'lunas';
+    document.getElementById('fPLapak').value = '';
+    updateDatalistPemancing();
+    showModal('modalPeserta');
+  };
+  window.editPeserta = (lombaId, pId) => {
+    if(currentRole !== 'admin') return;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    const p = lomba.peserta.find(p=>p.id===pId);
+    if(!p) return;
+    document.getElementById('fCurrentLombaId').value = lomba.id;
+    document.getElementById('fPId').value = p.id;
+    document.getElementById('fPNama').value = p.nama;
+    document.getElementById('fPHP').value = p.hp||'';
+    document.getElementById('fPBooking').value = p.booking;
+    document.getElementById('fPLapak').value = p.noLapak||'';
+    updateDatalistPemancing();
+    showModal('modalPeserta');
+  };
+  window.simpanPeserta = () => {
+    if(currentRole !== 'admin') return;
+    const lombaId = document.getElementById('fCurrentLombaId').value;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    const pId = document.getElementById('fPId').value;
+    const lapak = parseInt(document.getElementById('fPLapak').value) || null;
+    const peserta = { id: pId || 'pst_'+Date.now(), nama: document.getElementById('fPNama').value.trim(), hp: document.getElementById('fPHP').value, booking: document.getElementById('fPBooking').value, noLapak: lapak };
+    if(pId) { const idx = lomba.peserta.findIndex(p=>p.id===pId); if(idx!==-1) lomba.peserta[idx] = peserta; }
+    else lomba.peserta.push(peserta);
+    saveData(); closeModal('modalPeserta'); renderPeserta(); updateDatalistPemancing(); toast('Peserta disimpan');
+  };
   function renderPeserta() {
+    if(currentRole !== 'admin') return;
     const lomba = getLomba(document.getElementById('selDaftar').value);
     const btnTambah = document.getElementById('btnTambahPeserta'), btnUndi = document.getElementById('btnUndi');
-    if(!lomba) { 
-      document.getElementById('pesertaTable').innerHTML=''; 
-      btnTambah.disabled=true; 
-      btnUndi.disabled=true; 
-      return; 
-    }
-    btnTambah.disabled = lomba.status!=='upcoming';
-    // Tombol undi otomatis hanya aktif jika mode otomatis dan lomba upcoming
+    if(!lomba) { document.getElementById('pesertaTable').innerHTML = ''; btnTambah.disabled=true; btnUndi.disabled=true; return; }
+    btnTambah.disabled = lomba.status !== 'upcoming';
     btnUndi.disabled = !(currentModeUndi === 'otomatis' && lomba.status === 'upcoming');
-    
-    const isReadonly = (currentModeUndi === 'otomatis');
+    const readonly = (currentModeUndi === 'otomatis');
     document.getElementById('pesertaTable').innerHTML = (lomba.peserta||[]).map((p,i)=>`<tr>
       <td>${i+1}</td>
       <td>${p.nama}</td>
       <td>${p.hp||'-'}</td>
-      <td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:60px;padding:4px;" 
-           onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)" 
-           ${isReadonly ? 'readonly' : ''}></td>
+      <td><input type="number" value="${p.noLapak||''}" min="1" max="40" style="width:65px" onchange="updateNoLapak('${lomba.id}','${p.id}',this.value)" ${readonly?'readonly':''}></td>
       <td>${p.noLapak?group(p.noLapak):'-'}</td>
       <td>${p.booking}</td>
-      <td><button class="btn btn-sm btn-outline" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td>
+      <td><button class="btn btn-sm" onclick="editPeserta('${lomba.id}','${p.id}')">✏️</button></td>
     </tr>`).join('');
   }
   window.updateNoLapak = (lombaId, pesertaId, val) => {
-    if(currentModeUndi === 'otomatis') {
-      toast('Mode otomatis aktif, tidak bisa mengubah manual');
-      renderPeserta();
-      return;
-    }
+    if(currentRole !== 'admin') return;
+    if(currentModeUndi === 'otomatis') { toast('Mode otomatis!'); renderPeserta(); return; }
     const lomba = getLomba(lombaId); if(!lomba) return;
     const p = lomba.peserta.find(p=>p.id===pesertaId); if(!p) return;
-    const no = parseInt(val); if(isNaN(no)||no<1||no>TOTAL_LAPAK) { toast('Nomor lapak 1-40'); renderPeserta(); return; }
-    p.noLapak = no; saveData(); renderPeserta(); toast('Nomor lapak diperbarui');
-  };
-  window.editPeserta = (lombaId, pId) => {
-    const lomba = getLomba(lombaId); if(!lomba) return;
-    const p = lomba.peserta.find(p=>p.id===pId); if(!p) return;
-    document.getElementById('fPId').value=p.id; document.getElementById('fPNama').value=p.nama;
-    document.getElementById('fPHP').value=p.hp||''; document.getElementById('fPBooking').value=p.booking;
-    document.getElementById('fPLapak').value = p.noLapak||''; showModal('modalPeserta');
-  };
-  window.simpanPeserta = () => {
-    const lomba = getLomba(document.getElementById('selDaftar').value); if(!lomba) return;
-    const pId = document.getElementById('fPId').value;
-    const lapakManual = parseInt(document.getElementById('fPLapak').value) || null;
-    // Jika mode otomatis, jangan izinkan set manual (kecuali dari modal mungkin untuk admin bandel, biarkan saja)
-    const peserta = { id: pId || 'pst_'+Date.now(), nama: document.getElementById('fPNama').value.trim(), hp: document.getElementById('fPHP').value, booking: document.getElementById('fPBooking').value, noLapak: lapakManual };
-    if(pId) { const idx = lomba.peserta.findIndex(p=>p.id===pId); if(idx!==-1) lomba.peserta[idx]=peserta; }
-    else lomba.peserta.push(peserta);
-    saveData(); closeModal('modalPeserta'); renderPeserta(); toast('Peserta disimpan');
+    const no = parseInt(val); if(isNaN(no)||no<1||no>TOTAL_LAPAK) { toast('Lapak 1-40'); renderPeserta(); return; }
+    p.noLapak = no; saveData(); renderPeserta();
   };
   window.undiOtomatis = () => {
-    if(currentModeUndi !== 'otomatis') {
-      toast('Silakan pilih mode Otomatis terlebih dahulu');
-      return;
-    }
-    const lomba = getLomba(document.getElementById('selDaftar').value); if(!lomba) return;
-    if(lomba.status !== 'upcoming') { toast('Lomba sudah dimulai'); return; }
+    if(currentRole !== 'admin') return;
+    if(currentModeUndi !== 'otomatis') { toast('Aktifkan mode otomatis'); return; }
+    const lomba = getLomba(document.getElementById('selDaftar').value);
+    if(!lomba || lomba.status !== 'upcoming') return;
     const spots = Array.from({length:TOTAL_LAPAK},(_,i)=>i+1).sort(()=>Math.random()-0.5);
     lomba.peserta.forEach((p,i)=> p.noLapak = spots[i]);
-    saveData(); renderPeserta(); toast('🎲 Undian otomatis selesai');
+    saveData(); renderPeserta(); toast('Undian selesai');
   };
 
+  // Catatan & Edit (hanya admin)
   function renderCatatan() {
+    if(currentRole !== 'admin') return;
     const lomba = getLomba(document.getElementById('selCatat').value);
-    document.getElementById('aksiCatatan').style.display = lomba?'block':'none';
-    document.getElementById('btnMulai').style.display = lomba?.status==='upcoming'?'inline-flex':'none';
-    document.getElementById('btnSelesai').style.display = lomba?.status==='active'?'inline-flex':'none';
-    document.getElementById('infoCatatan').innerHTML = lomba?`${lomba.nama} | ${lomba.tipe} | ${lomba.tanggal} | ${lomba.status}`:'';
-    document.getElementById('catatanTable').innerHTML = (lomba?.catatan||[]).map(c=>{ const p=lomba.peserta.find(p=>p.noLapak===c.noLapak); return `<tr><td>${c.waktu}</td><td>${c.noLapak||'-'}</td><td>${p?.nama||'-'}</td><td>${c.tipe}</td><td>${c.berat||c.jumlah||'-'}</td></tr>`; }).join('');
+    const aksiDiv = document.getElementById('aksiCatatan');
+    if(lomba) {
+      aksiDiv.style.display = 'flex';
+      document.getElementById('btnMulai').style.display = lomba.status==='upcoming'?'inline-flex':'none';
+      document.getElementById('btnSelesai').style.display = lomba.status==='active'?'inline-flex':'none';
+      document.getElementById('infoCatatan').innerHTML = `<b>${lomba.nama} | ${lomba.status.toUpperCase()}</b>`;
+    } else { aksiDiv.style.display = 'none'; }
+    const tbody = document.querySelector('#catatanTable tbody');
+    if(!tbody) return;
+    tbody.innerHTML = (lomba?.catatan||[]).map(c => {
+      const p = lomba?.peserta.find(p=>p.noLapak===c.noLapak);
+      let detail = '';
+      if(c.tipe === 'super') detail = c.berat + ' kg';
+      else detail = c.jumlah + ' ekor' + (c.beratRamai ? ` (${c.beratRamai} kg)` : '');
+      return `<tr>
+        <td>${c.waktu}</td>
+        <td>${c.noLapak}</td>
+        <td>${p?p.nama:'?'}</td>
+        <td>${c.tipe==='super'?'🐟 SUPER':'🐠 RAMAI'}</td>
+        <td>${detail}</td>
+        <td><button class="btn btn-sm" onclick="editCatatan('${lomba.id}','${c.id}')">✏️</button> <button class="btn btn-sm btn-danger" onclick="hapusCatatan('${lomba.id}','${c.id}')">🗑️</button></td>
+      </tr>`;
+    }).reverse().join('');
   }
-  window.mulaiLomba = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value);
-    if(!lomba || lomba.status!=='upcoming') return;
-    if(!lomba.peserta.some(p=>p.noLapak)) { toast('Undi lapak dulu!'); return; }
-    lomba.status='active'; lomba.actualStart=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); toast('Lomba dimulai');
+  window.editCatatan = (lombaId, catId) => {
+    if(currentRole !== 'admin') return;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    const cat = lomba.catatan.find(c=>c.id===catId);
+    if(!cat) return;
+    document.getElementById('editCatatanId').value = catId;
+    document.getElementById('editCatatanLombaId').value = lombaId;
+    document.getElementById('editCatatanTipe').value = cat.tipe;
+    document.getElementById('editCatatanTitle').innerText = cat.tipe==='super'?'Edit Ikan Super':'Edit Ikan Ramai';
+    if(cat.tipe==='super') {
+      document.getElementById('editGroupBerat').style.display = 'block';
+      document.getElementById('editGroupJumlah').style.display = 'none';
+      document.getElementById('editGroupBeratRamai').style.display = 'none';
+      document.getElementById('editBerat').value = cat.berat;
+    } else {
+      document.getElementById('editGroupBerat').style.display = 'none';
+      document.getElementById('editGroupJumlah').style.display = 'block';
+      document.getElementById('editGroupBeratRamai').style.display = 'block';
+      document.getElementById('editJumlah').value = cat.jumlah;
+      document.getElementById('editBeratRamai').value = cat.beratRamai || 0;
+    }
+    showModal('modalEditCatatan');
   };
-  window.selesaiLomba = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value);
-    if(!lomba || lomba.status!=='active') return;
-    lomba.status='completed'; lomba.actualEnd=new Date().toLocaleString('id-ID'); saveData(); renderCatatan(); toast('Lomba selesai');
+  window.simpanEditCatatan = () => {
+    if(currentRole !== 'admin') return;
+    const lombaId = document.getElementById('editCatatanLombaId').value;
+    const catId = document.getElementById('editCatatanId').value;
+    const tipe = document.getElementById('editCatatanTipe').value;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    const idx = lomba.catatan.findIndex(c=>c.id===catId);
+    if(idx===-1) return;
+    if(tipe==='super') {
+      const newBerat = parseFloat(document.getElementById('editBerat').value);
+      if(isNaN(newBerat)||newBerat<=0) { toast('Berat invalid'); return; }
+      lomba.catatan[idx].berat = newBerat;
+    } else {
+      const newJumlah = parseInt(document.getElementById('editJumlah').value);
+      const newBeratRamai = parseFloat(document.getElementById('editBeratRamai').value) || 0;
+      if(isNaN(newJumlah)||newJumlah<1) { toast('Jumlah invalid'); return; }
+      lomba.catatan[idx].jumlah = newJumlah;
+      lomba.catatan[idx].beratRamai = newBeratRamai;
+    }
+    saveData(); closeModal('modalEditCatatan'); renderCatatan(); renderHasil(); renderTV(); toast('Catatan diupdate');
+  };
+  window.hapusCatatan = (lombaId, catId) => {
+    if(currentRole !== 'admin') return;
+    if(!confirm('Hapus catatan?')) return;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    lomba.catatan = lomba.catatan.filter(c=>c.id!==catId);
+    saveData(); renderCatatan(); renderHasil(); renderTV(); toast('Dihapus');
+  };
+  window.mulaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='upcoming') return; if(!l.peserta.some(p=>p.noLapak)) { toast('Undi lapak dulu'); return; } l.status='active'; l.actualStart=new Date().toLocaleString(); saveData(); renderCatatan(); toast('Lomba dimulai'); renderTV(); };
+  window.selesaiLomba = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; l.status='completed'; l.actualEnd=new Date().toLocaleString(); saveData(); renderCatatan(); toast('Lomba selesai'); renderTV(); };
+  window.catatSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; const sel = document.getElementById('fSuperPeserta'); sel.innerHTML='<option>--Pilih--</option>'; l.peserta.filter(p=>p.noLapak).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`Lapak ${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); showModal('modalSuper'); };
+  window.simpanSuper = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fSuperPeserta').value); const berat = parseFloat(document.getElementById('fSuperBerat').value); if(!no||!berat) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'super', berat, waktu:new Date().toLocaleTimeString()}); saveData(); closeModal('modalSuper'); renderCatatan(); renderTV(); };
+  window.catatRamai = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l||l.status!=='active') return; isiPesertaGroup(); showModal('modalRamai'); };
+  window.isiPesertaGroup = () => { const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const grp = document.getElementById('fRamaiGroup').value; const sel = document.getElementById('fRamaiPeserta'); sel.innerHTML='<option>--Pilih--</option>'; l.peserta.filter(p=>p.noLapak && group(p.noLapak)===grp).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`Lapak ${p.noLapak} - ${p.nama}`; sel.appendChild(o); }); };
+  window.simpanRamai = () => { if(currentRole !== 'admin') return; const l = getLomba(document.getElementById('selCatat').value); if(!l) return; const no = parseInt(document.getElementById('fRamaiPeserta').value); const jml = parseInt(document.getElementById('fRamaiJumlah').value)||1; const berat = parseFloat(document.getElementById('fRamaiBerat').value)||0; if(!no) return; l.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'ramai', jumlah:jml, beratRamai:berat, waktu:new Date().toLocaleTimeString()}); saveData(); closeModal('modalRamai'); renderCatatan(); renderTV(); };
+
+  // Logika Juara Ramai (sama seperti sebelumnya)
+  function hitungDataRamai(lomba) {
+    const groupData = { A: {}, B: {} };
+    (lomba.catatan||[]).forEach(c => {
+      if(c.tipe !== 'ramai') return;
+      const no = c.noLapak;
+      const grp = group(no);
+      if(!groupData[grp][no]) groupData[grp][no] = { jumlah: 0, totalBerat: 0 };
+      groupData[grp][no].jumlah += (c.jumlah || 0);
+      groupData[grp][no].totalBerat += (c.beratRamai || 0);
+    });
+    return groupData;
+  }
+
+  function getKandidatJuaraRamai(lomba, grp) {
+    const data = hitungDataRamai(lomba)[grp];
+    if(Object.keys(data).length === 0) return [];
+    let maxJumlah = -1;
+    for(let no in data) if(data[no].jumlah > maxJumlah) maxJumlah = data[no].jumlah;
+    const kandidat = [];
+    for(let no in data) {
+      if(data[no].jumlah === maxJumlah) {
+        const peserta = lomba.peserta.find(p => p.noLapak === parseInt(no));
+        kandidat.push({ noLapak: parseInt(no), nama: peserta ? peserta.nama : '?', jumlah: maxJumlah, totalBerat: data[no].totalBerat });
+      }
+    }
+    return kandidat;
+  }
+
+  function getJuaraRamaiFinal(lomba, grp) {
+    const mode = lomba.tieBreakerRamai || 'timbang';
+    if(mode === 'timbang') {
+      const kandidat = getKandidatJuaraRamai(lomba, grp);
+      if(kandidat.length === 0) return null;
+      if(kandidat.length === 1) return kandidat[0];
+      let winner = kandidat[0];
+      for(let i=1; i<kandidat.length; i++) if(kandidat[i].totalBerat > winner.totalBerat) winner = kandidat[i];
+      return winner;
+    } else {
+      const stored = (grp === 'A') ? lomba.juaraRamaiA : lomba.juaraRamaiB;
+      if(stored) {
+        const peserta = lomba.peserta.find(p => p.noLapak === stored);
+        if(peserta) {
+          const data = hitungDataRamai(lomba)[grp][stored];
+          return { noLapak: stored, nama: peserta.nama, jumlah: data ? data.jumlah : 0, totalBerat: data ? data.totalBerat : 0 };
+        }
+      }
+      return null;
+    }
+  }
+
+  window.bukaPilihJuaraRamai = (lombaId, grp) => {
+    if(currentRole !== 'admin') return;
+    const lomba = getLomba(lombaId);
+    if(!lomba) return;
+    const kandidat = getKandidatJuaraRamai(lomba, grp);
+    if(kandidat.length === 0) { toast('Tidak ada data ramai untuk group ini'); return; }
+    const container = document.getElementById('daftarKandidatJuara');
+    container.innerHTML = '<p>Pilih Juara:</p>';
+    kandidat.forEach(k => {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-sm';
+      btn.style.margin = '5px';
+      btn.innerText = `Lapak ${k.noLapak} - ${k.nama} (${k.jumlah} ekor, berat ${k.totalBerat} kg)`;
+      btn.onclick = () => {
+        if(grp === 'A') lomba.juaraRamaiA = k.noLapak;
+        else lomba.juaraRamaiB = k.noLapak;
+        saveData();
+        closeModal('modalPilihJuaraRamai');
+        renderHasil();
+        renderTV();
+        toast(`Juara Ramai Group ${grp} ditetapkan`);
+      };
+      container.appendChild(btn);
+    });
+    document.getElementById('pilihJuaraGroup').value = grp;
+    document.getElementById('pilihJuaraLombaId').value = lombaId;
+    document.getElementById('pilihJuaraTitle').innerText = `Pilih Juara Ikan Ramai Group ${grp}`;
+    showModal('modalPilihJuaraRamai');
   };
 
-  function getPesertaTerundi(lomba) { return (lomba?.peserta||[]).filter(p=>p.noLapak); }
-  window.catatSuper = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value);
-    if(!lomba || lomba.status!=='active') return;
-    const select = document.getElementById('fSuperPeserta');
-    select.innerHTML = '<option value="">-- Pilih --</option>';
-    getPesertaTerundi(lomba).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`${p.noLapak} - ${p.nama}`; select.appendChild(o); });
-    document.getElementById('fSuperBerat').value=''; showModal('modalSuper');
-  };
-  window.simpanSuper = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value); if(!lomba) return;
-    const no = parseInt(document.getElementById('fSuperPeserta').value);
-    const berat = parseFloat(document.getElementById('fSuperBerat').value);
-    if(!no || !berat) return;
-    lomba.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'super', berat, jumlah:null, group:group(no), waktu:new Date().toLocaleTimeString('id-ID')});
-    saveData(); closeModal('modalSuper'); renderCatatan();
-  };
-  window.catatRamai = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value);
-    if(!lomba || lomba.status!=='active') return;
-    document.getElementById('fRamaiGroup').value='A'; isiPesertaGroup(); document.getElementById('fRamaiJumlah').value='1'; showModal('modalRamai');
-  };
-  window.isiPesertaGroup = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value); if(!lomba) return;
-    const grp = document.getElementById('fRamaiGroup').value;
-    const select = document.getElementById('fRamaiPeserta');
-    select.innerHTML = '<option value="">-- Pilih --</option>';
-    getPesertaTerundi(lomba).filter(p=>group(p.noLapak)===grp).forEach(p=>{ const o=document.createElement('option'); o.value=p.noLapak; o.textContent=`${p.noLapak} - ${p.nama}`; select.appendChild(o); });
-  };
-  window.simpanRamai = () => {
-    const lomba = getLomba(document.getElementById('selCatat').value); if(!lomba) return;
-    const no = parseInt(document.getElementById('fRamaiPeserta').value);
-    const jumlah = parseInt(document.getElementById('fRamaiJumlah').value)||1;
-    if(!no) return;
-    lomba.catatan.push({id:'cat_'+Date.now(), noLapak:no, tipe:'ramai', berat:null, jumlah, group:group(no), waktu:new Date().toLocaleTimeString('id-ID')});
-    saveData(); closeModal('modalRamai'); renderCatatan();
-  };
-
-  function hitungJuara(lomba) {
+  function hitungJuaraSuper(lomba) {
     const superFish = (lomba.catatan||[]).filter(c=>c.tipe==='super').sort((a,b)=>b.berat-a.berat);
     const winners=[], used=new Set();
-    for(const s of superFish) { if(winners.length>=lomba.jmlJuara) break; if(used.has(s.noLapak)) continue; const p=lomba.peserta.find(p=>p.noLapak===s.noLapak); winners.push({rank:winners.length+1, noLapak:s.noLapak, nama:p?.nama||'?', berat:s.berat, waktu:s.waktu}); used.add(s.noLapak); }
-    const spotCount={}; superFish.forEach(s=>spotCount[s.noLapak]=(spotCount[s.noLapak]||0)+1);
-    let induk=null, max=0;
-    for(const [spot,cnt] of Object.entries(spotCount)) if(cnt>max) { max=cnt; const p=lomba.peserta.find(p=>p.noLapak===parseInt(spot)); induk={noLapak:parseInt(spot), nama:p?.nama||'?', count:cnt}; }
-    const ramaiA=(lomba.catatan||[]).filter(c=>c.tipe==='ramai'&&c.group==='A').reduce((s,c)=>s+(c.jumlah||0),0);
-    const ramaiB=(lomba.catatan||[]).filter(c=>c.tipe==='ramai'&&c.group==='B').reduce((s,c)=>s+(c.jumlah||0),0);
-    return {winners,induk,ramaiA,ramaiB};
+    for(const s of superFish) {
+      if(winners.length >= lomba.jmlJuara) break;
+      if(used.has(s.noLapak)) continue;
+      const p = lomba.peserta.find(p=>p.noLapak===s.noLapak);
+      winners.push({ rank: winners.length+1, noLapak: s.noLapak, nama: p?.nama||'?', berat: s.berat, waktu: s.waktu });
+      used.add(s.noLapak);
+    }
+    return winners;
   }
+
+  function hitungTotalInduk(lomba) {
+    if(lomba.hitungInduk === false) return null;
+    const count = {};
+    (lomba.catatan||[]).forEach(c => {
+      if(c.tipe === 'super') count[c.noLapak] = (count[c.noLapak]||0) + 1;
+    });
+    let max = 0, winnerNo = null;
+    for(let [no, total] of Object.entries(count)) {
+      if(total > max) { max = total; winnerNo = parseInt(no); }
+    }
+    if(winnerNo) {
+      const p = lomba.peserta.find(p=>p.noLapak === winnerNo);
+      return { noLapak: winnerNo, nama: p?.nama||'?', jumlah: max };
+    }
+    return null;
+  }
+
   function renderHasil() {
     const lomba = getLomba(document.getElementById('selHasil').value);
     const div = document.getElementById('hasilContent');
-    if(!lomba) { div.innerHTML=''; return; }
-    const h = hitungJuara(lomba);
-    div.innerHTML = `<h4>🏆 Juara Terberat</h4>${h.winners.map(w=>`<p>${w.rank}. Lapak ${w.noLapak} - ${w.nama} (${w.berat} kg) - ${w.waktu}</p>`).join('')}<h4>👑 Total Induk</h4>${h.induk?`<p>Lapak ${h.induk.noLapak} - ${h.induk.nama} (${h.induk.count}x)</p>`:'<p>Belum ada</p>'}<h4>🐠 Total Ramai</h4><p>Group A: ${h.ramaiA} | Group B: ${h.ramaiB}</p>`;
+    if(!lomba) { div.innerHTML = ''; return; }
+    const superWinners = hitungJuaraSuper(lomba);
+    const totalInduk = hitungTotalInduk(lomba);
+    const mode = lomba.tieBreakerRamai || 'timbang';
+    const winnerA = getJuaraRamaiFinal(lomba, 'A');
+    const winnerB = getJuaraRamaiFinal(lomba, 'B');
+    let html = `<div style="background:#fef5e3; border-radius:24px; padding:16px;">
+      <h4>🏆 JUARA IKAN SUPER (INDUK)</h4>${superWinners.map(w=>`<p>${w.rank}. Lapak ${w.noLapak} - ${w.nama} (${w.berat} kg) - ${w.waktu}</p>`).join('')}`;
+    if(totalInduk !== null && totalInduk) html += `<h4>👑 TOTAL INDUK TERBANYAK</h4><p>🏅 Lapak ${totalInduk.noLapak} - ${totalInduk.nama} : ${totalInduk.jumlah} ekor</p>`;
+    html += `<h4>🐟 JUARA RAMAI LAPAK KECIL (A)</h4>`;
+    if(winnerA) html += `<p>🏅 Lapak ${winnerA.noLapak} - ${winnerA.nama} : ${winnerA.jumlah} ekor</p>`;
+    else if(mode === 'panitia' && currentRole === 'admin') {
+      html += `<p>Belum ditentukan. <button class="btn btn-sm" onclick="bukaPilihJuaraRamai('${lomba.id}','A')">Pilih Juara A</button></p>`;
+    } else html += `<p>-</p>`;
+    html += `<h4>🐟 JUARA RAMAI LAPAK BESAR (B)</h4>`;
+    if(winnerB) html += `<p>🏅 Lapak ${winnerB.noLapak} - ${winnerB.nama} : ${winnerB.jumlah} ekor</p>`;
+    else if(mode === 'panitia' && currentRole === 'admin') {
+      html += `<p>Belum ditentukan. <button class="btn btn-sm" onclick="bukaPilihJuaraRamai('${lomba.id}','B')">Pilih Juara B</button></p>`;
+    } else html += `<p>-</p>`;
+    html += `</div>`;
+    div.innerHTML = html;
   }
 
   function renderTV() {
     const lomba = getLomba(document.getElementById('selTV').value);
     const container = document.getElementById('tvContainer');
-    if(!lomba) { container.innerHTML='<p>Pilih lomba</p>'; return; }
-    const h = hitungJuara(lomba);
-    const rows = h.winners.slice(0,4).map((w,i)=>`<tr style="${i===0?'background:rgba(255,215,0,0.2)':i===1?'background:rgba(192,192,192,0.2)':i===2?'background:rgba(205,127,50,0.2)':''}"><td>${w.rank}</td><td>Lapak ${w.noLapak}</td><td>${w.nama}</td><td>${w.berat} kg</td></tr>`).join('');
-    container.innerHTML = `<div class="scoreboard"><h2>🏆 JUARA IKAN INDUK</h2><p>${lomba.nama} | ${lomba.tanggal} | ${lomba.status==='active'?'🔴 LIVE':''}</p><table><thead><tr><th>#</th><th>Lapak</th><th>Nama</th><th>Berat</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    if(!lomba) { container.innerHTML = '<p>Pilih lomba</p>'; return; }
+    const superWinners = hitungJuaraSuper(lomba);
+    const totalInduk = hitungTotalInduk(lomba);
+    const mode = lomba.tieBreakerRamai || 'timbang';
+    const winnerA = getJuaraRamaiFinal(lomba, 'A');
+    const winnerB = getJuaraRamaiFinal(lomba, 'B');
+    const rowsSuper = superWinners.slice(0,4).map(w=>`<tr><th>${w.rank}</th><th>${w.noLapak}</th><th>${w.nama}</th><th>${w.berat} kg</th><th>${w.waktu}</th>`).join('');
+    let title = (lomba.status === 'completed') ? '🏆 DAFTAR JUARA' : '🎣 JUARA SEMENTARA';
+    let html = `<div class="scoreboard"><h2>${title}</h2><p>${lomba.nama} | ${lomba.tanggal} | ${lomba.status==='active'?'🔴 LIVE':(lomba.status==='completed'?'🏁 FINAL':'BELUM MULAI')}</p>
+      <h3>🏆 Ikan Super (Induk)</h3><table><thead><tr><th>#</th><th>Lapak</th><th>Nama</th><th>Berat</th><th>Waktu</th></tr></thead><tbody>${rowsSuper||'<tr><td colspan="5">Belum ada data</td></tr>'}</tbody></table>`;
+    if(totalInduk !== null && totalInduk) html += `<h3>👑 Total Induk Terbanyak</h3><p>🏅 Lapak ${totalInduk.noLapak} - ${totalInduk.nama} : ${totalInduk.jumlah} ekor</p>`;
+    html += `<h3>🐟 Ikan Ramai - Lapak Kecil (A)</h3>`;
+    if(winnerA) html += `<p>🏅 Lapak ${winnerA.noLapak} - ${winnerA.nama} : ${winnerA.jumlah} ekor</p>`;
+    else if(mode === 'panitia') html += `<p>Menunggu penetapan panitia</p>`;
+    else html += `<p>Belum ada data</p>`;
+    html += `<h3>🐟 Ikan Ramai - Lapak Besar (B)</h3>`;
+    if(winnerB) html += `<p>🏅 Lapak ${winnerB.noLapak} - ${winnerB.nama} : ${winnerB.jumlah} ekor</p>`;
+    else if(mode === 'panitia') html += `<p>Menunggu penetapan panitia</p>`;
+    else html += `<p>Belum ada data</p>`;
+    html += `</div>`;
+    container.innerHTML = html;
   }
-  setInterval(()=>{ if(document.getElementById('panel-papan').classList.contains('active')) renderTV(); },5000);
 
-  window.resetAllData = () => { if(confirm('Hapus SEMUA data?')) { data={lomba:[]}; saveData(); refreshAll(); toast('Data direset'); } };
-
-  function refreshAll() {
-    renderLomba();
-    ['selDaftar','selCatat','selHasil','selTV'].forEach(id => populateSelect(id));
-    // Pastikan mode undi saat ini diterapkan saat render peserta
-    renderPeserta();
-    renderCatatan();
-    renderHasil();
-    renderTV();
-  }
-
+  window.resetAllData = () => { if(currentRole !== 'admin') return; if(confirm('Hapus semua data?')) { data={lomba:[]}; saveData(); refreshAll(); toast('Data direset'); } };
+  function refreshAll() { generateMenu(); renderLomba(); ['selDaftar','selCatat','selHasil','selTV'].forEach(populateSelect); renderPeserta(); renderCatatan(); renderHasil(); renderTV(); updateDatalistPemancing(); }
   loadData(); refreshAll();
+  setInterval(()=>{ if(document.getElementById('panel-papan').classList.contains('active')) renderTV(); }, 4000);
 })();
 </script>
 </body>
